@@ -17,7 +17,7 @@ The project seems like it may be too small in scope. It seems closter to the app
 ### Charlie
 Unless your application contains substantial real-time features using techniques (such as long polling and web sockets) that we've not taught in this course, I'm concerned that your project is much too small and much too similar to Grumblr to be an appropriate final project for this course.  In its current form, you propose core features that are a subset of Grumblr's core features, except that you presumably access the page more frequently than Grumblr to mimic the behavior of a real-time application.
 
-You must substantially revise this proposal before continuing with your final project specification.  If you don't have ideas for how to revise your proposal, please see me (Charlie) or other course staff for ideas on how you might complete a project that is more-substantially different than the course homeworks.
+You must substantially revise this proposal before continuing with your final project specification.  If you don't have ideas for how to revise your proposal, please see me (Charlie) or other course staff for ideas on how you might complete a project that is more-substantially different than the course homeworks.  In the case that you are proposing the sort of substantial real-time features I discuss above, please specifically indicate the technologies you plan to use to support those real-time features.
 
 ---
 
