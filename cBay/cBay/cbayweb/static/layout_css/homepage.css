@@ -1,0 +1,33 @@
+.form-control input{
+	width: 226px;
+}
+
+
+.DocumentListHorizontal
+{
+    overflow-x:scroll;
+    overflow-y:hidden;
+    height:300px;
+    width:100%;
+    padding: 0 15px;
+}
+
+.DocumentItem
+{
+    padding:0;
+    height:300px;
+}
+
+.list-inline {
+  white-space:nowrap;
+}
+
+
+.DocumentListVertical
+{
+    overflow-y:scroll;
+    overflow-x:hidden;
+    height:800px;
+    width:100%;
+    padding: 0 15px;
+}
