@@ -1,0 +1,32 @@
+{% extends 'cbayweb/base.html' %}
+{% block title %}cBay Register{% endblock %}
+{% block page_header %}<h1>Welcome to cBay!</h1>{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row clearfix">
+		<div class="col-md-6 column well well-lg">
+			{{ form.non_field_errors }}
+			<div class="fieldWrapper">
+				{{ form.subject.errors }}
+				<label for="username">Username:</label>
+				{{form.username }}
+			</div>
+			<div class="fieldWrapper">
+				{{ form.message.errors }}
+				<label for="password">Password:</label>
+				{{ form.password }}
+			</div>
+			<br>
+			<a href="{% url 'login' %}"><button type="button" class="btn btn-primary">Sign in</button></a>
+		</div>
+		<div class="col-md-1 column ">
+		</div>
+		<div class="col-md-5 column ">
+		<br><br><br>
+			<h2 >Not Registered?</h2>
+			<a href="{% url 'register' %}"><button type="button" class="btn btn-primary ">Register</button></a>
+		</div>
+	</div>
+</div>
+{% endblock %}
