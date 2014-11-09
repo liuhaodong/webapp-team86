@@ -53,6 +53,8 @@ ROOT_URLCONF = 'cBay.urls'
 
 WSGI_APPLICATION = 'cBay.wsgi.application'
 
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
