@@ -1,0 +1,72 @@
+{% extends "cbayweb/base.html" %}
+
+{% block title %}cBay postItem{% endblock %}
+
+{% block content %}
+
+<div class="row clearfix">
+	<div class="col-md-12 column well well-lg panel panel-default">
+		<div class="panel-heading">
+			Describe your item
+		</div>
+		<div class="panel-body">
+			<form enctype="multipart/form-data" method='post'>
+				Title: <input type="text" name="title"><br>
+				<br>
+				Photo: <input type="file" name="id_picture">
+				<br>
+				Description: <textarea class="form-control" rows=7 placeholder="Write your Description here!" name="post"></textarea>
+				{% csrf_token %}
+			</form>   
+		</div>
+	</div>
+</div>
+
+
+<div class="row clearfix">
+	<div class="col-md-12 column well well-lg panel panel-default">		
+		<div class="panel-heading">
+			Select format and price 
+		</div>
+		<div class="panel-body">	
+			<div> 
+				List as:
+				<select class="selectpicker">
+					<option>Action</option>
+					<option>Fixed Price</option>
+				</select>
+			</div>
+			<br>
+			<form>
+				Price: <input type="text" name="title">
+			</form>
+			<br>
+			<div>
+				List duration: 
+				<select class="selectpicker">
+					<option>7 days</option>
+					<option>14 days</option>
+					<option>21 days</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row clearfix">
+	<div class="col-md-12 column well well-lg panel panel-default">
+		<div class="panel-heading">
+			Shipping Info 
+		</div>
+		<div class="panel-body">
+			<form >
+				<textarea class="form-control" rows=7 placeholder="Write your Description here!" name="post"></textarea>
+				{% csrf_token %}
+			</form>
+		</div>					
+	</div>
+</div>
+<div>
+	<button type="submit"> Save </button>
+</div>
+{% endblock %}
+

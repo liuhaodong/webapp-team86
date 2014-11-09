@@ -21,3 +21,12 @@ def login(request):
 	else:
 		form = LoginForm()
 	return render(request, 'cbayweb/login.html',{'form':form})
+
+def reviewOrder(request):
+	return render(request, 'cbayweb/reviewOrder.html',{})
+
+def postItem(request):
+	return render(request, 'cbayweb/postItem.html',{})
+
+def accountManage(request):
+	return render(request, 'cbayweb/accountManage.html',{})
