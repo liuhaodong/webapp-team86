@@ -1,32 +1,40 @@
 {% extends "cbayweb/base.html" %}
 
-{% block title %}cBay Homepage{% endblock %}
-
+{% block title %}cBay Review Order{% endblock %}
 {% block content %}
-
-
 <div class="row clearfix">
 	<div class="col-md-12 column well well-lg">
 		
 		<div class="col-md-7 column well well-lg">
-		  <div><h4> Ship to: </h4></div>
-			 Yang Yang <br>
-             5000 BAYARD ST APT 46 <br>
-             PITTSBURGH, PA 15213-2732 <br>
-             United States <br>
-             Phone: 412-111-1111 <br><br>
-             <div><h4>PAYPAL</h4></div><br>
-             PayPal Credit<br>
-             12 month financing... <br>
-		</div>
+                  <div class="col-md-6 column">
+                        <div><h4> Ship to: </h4></div>
+                        {{order.buyer.username}} <br>
+                        5000 BAYARD ST APT 46 <br>
+                        PITTSBURGH, PA 15213-2732 <br>
+                        United States <br>
+                        Phone: 412-111-1111 <br><br>
+                        <div><h4>PAYPAL</h4></div><br>
+                        PayPal Credit<br>
+                        12 month financing... <br>
+                  </div>
+                  <div class="col-md-6 column">
+                        <h2>Order Description</h2>
+                        <p>Item Name: {{order.sale.name}}</p>
+                        <p>Quantity: {{order.quantity}}</p>
+                  </div>
+                  
+            </div>
 
-		<div class="col-md-5 column">
-            <div><h4> Total: $500</h4></div>
-            <br>
-            <button type="submit"> Pay</button>
-		</div>
-	</div>
+            <div class="col-md-5 column">
+                  <div><h4> Total: ${{order.price}}</h4></div>
+                  <br>
+                  <form method="post" action="{% url 'payOrder' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_id"  value={{order.id}} >
+                        <button class='btn btn-primary' type="submit"> Pay</button>
+                  </form>
+            </div>
+      </div>
 </div>
-
 {% endblock %}
 
