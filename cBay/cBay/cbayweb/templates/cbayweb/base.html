@@ -42,7 +42,7 @@
 									<li class="divider">
 									</li>
 									<li>
-										<a href="#">Account settings</a>
+										<a href="{% url 'accountManage' %}">Account settings</a>
 									</li>
 									<li class="divider">
 									</li>
@@ -52,7 +52,7 @@
 								</ul>
 							</li>
 							<li>
-								<a href="{% url 'homepage' %}">Daily Deals</a>
+								<a href="{% url 'homepage' %}">Homepage</a>
 							</li>
 
 							<li>
@@ -72,7 +72,7 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">My cBay<strong class="caret"></strong></a>
 								<ul class="dropdown-menu">
 									<li>
-										<a href="#">Summary</a>
+										<a href="{% url 'accountManage' %}">Summary</a>
 									</li>
 									<li>
 										<a href="#">Bids/Offers</a>

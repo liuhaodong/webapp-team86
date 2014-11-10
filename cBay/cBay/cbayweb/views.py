@@ -6,16 +6,19 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 # Decorator to use built-in authentication system
 from django.contrib.auth.decorators import login_required
-
+from django.http import HttpResponse, Http404
 # Used to create and manually log in a user
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from forms import *
+from mimetypes import guess_type
 
 # Create your views here.
 @login_required
 def homepage(request):
-	return render(request, 'cbayweb/homepage.html',{})
+	sales = Sale.objects.all()
+	print(len(sales))
+	return render(request, 'cbayweb/homepage.html',{'sales': sales})
 
 @login_required
 def viewSale(request, sale_id):
@@ -99,7 +102,7 @@ def payOrder(request):
 def postSale(request):
 	if request.method == 'POST':
 		sale = Sale(seller= get_object_or_404(User, id = request.user.id))
-		form = SaleModelForm(request.POST,instance=sale)
+		form = SaleModelForm(request.POST, request.FILES, instance=sale)
 		if form.is_valid():
 			new_sale = form.save()
 			print('New Item Saved')
@@ -124,6 +127,13 @@ def accountManage(request):
 	context['sales'] = sales
 	return render(request, 'cbayweb/accountManage.html',context)
 
+@login_required
+def get_item_picture(request, sale_id):
+	sale = get_object_or_404(Sale, id=sale_id)
+	if not sale.item_pic:
+		raise Http404
+	content_type = guess_type(sale.item_pic.name)
+	return HttpResponse(sale.item_pic, content_type=content_type)
 
 
 

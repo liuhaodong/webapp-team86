@@ -32,32 +32,43 @@
 				<div class = "tab-content">
 					<div class="tab-pane active" id = "panel-buy">
 						<div class = "col-md-10 column well well-lg">
-							<div >
+							{% for transaction in transactions %}
+							<div class = "col-md-12 column">
 								<div class = "col-md-5 column ">
-									<span><img alt="70x70" src="http://lorempixel.com/150/150/" class="img-thumbnail"></span>
+									{% if transaction.sale.item_pic %}
+									<span><a href="{% url 'viewSale' transaction.sale.id %}"><img src="{% url 'item_picture' transaction.sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									{% else %}
+									<span><a href="{% url 'viewSale' transaction.sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+									{% endif %}								
 								</div>
 								<div class = "col-md-7 column ">
-									{% for transaction in transactions %}
+
 									<h5>Item Name: {{transaction.sale.name}}(bought)</h5>
 									Price : ${{transaction.sale.price}} <br>
 									Quantity: {{transaction.quantity}}<br>
 									Purchage Time: {{transaction.time}} <br>
 									Seller Link: {{transaction.sale.seller}}  <br>
 									<button type="button" class="btn btn-primary"> Contact Seller </button>
-									{% endfor %}
-								</div>				 
+
+								</div>	
+
 							</div>
+							{% endfor %}
 						</div>
 					</div>
 
 					<div class="tab-pane" id = "panel-sell">
 						<div class = "col-md-10 column well well-lg">
-							<div >
+							{% for sale in sales %}
+							<div class = "col-md-12 column">	
 								<div class = "col-md-5 column ">
-									<span><img alt="70x70" src="http://lorempixel.com/150/150/" class="img-thumbnail"></span>
+									{% if sale.item_pic %}
+									<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									{% else %}
+									<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+									{% endif %}
 								</div>
 								<div class = "col-md-7 column ">
-								{% for sale in sales %}
 									<h5>Item Name: {{sale.name}}(sold)</h5>
 									Price : ${{sale.price}} <br>
 									Start Time: {{sale.start_time}} <br>
@@ -65,9 +76,9 @@
 									Quantity: {{sale.quantity}} <br>
 									Seller Link: {{sale.seller}}  <br>
 									<button type="button" class="btn btn-primary"> Contact Seller </button>
-									{% endfor %}
-								</div>				 
+								</div>	
 							</div>
+							{% endfor %}
 						</div>
 					</div>
 				</div>
@@ -79,7 +90,9 @@
 		</div>
 		<div class="tab-pane" id="panel-account">
 			<p>User Name: {{user.username}}</p>
-			<p>Account Balance: {{profile.account_balance}}</p>
+			<p>User Email: {{user.email}}</p>
+			<p>Address: {{profile.address}}</p>
+			<p>Account Balance: ${{profile.account_balance}}</p>
 		</div>
 		<script type="text/javascript">
 			$('#pills-accountManag-Tabs a').click(function (e) {
