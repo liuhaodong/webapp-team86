@@ -71,22 +71,24 @@ def placeOrder(request):
 def payOrder(request):
 	if request.method == 'POST':
 		order = get_object_or_404(Order, id = request.POST['order_id'])
-		print(order.id)
 		buyer_profile = get_object_or_404(Profile, user = order.buyer)
-		print(buyer_profile.id)
 		seller_profile = get_object_or_404(Profile, user = order.sale.seller)
 		print(seller_profile.id)
 		sale = order.sale
 		new_item = Item(sale=sale, sold_price=sale.price, name=sale.name, description=sale.description, buyer=request.user, seller= sale.seller, list_time = sale.start_time)
-		new_transaction = Transaction(item = new_item, quantity=order.quantity, price = order.price, seller = sale.seller, buyer=request.user)
+		new_transaction = Transaction(item = new_item, sale=sale, quantity=order.quantity, price = order.price, seller = sale.seller, buyer=request.user)
 		buyer_profile.account_balance = buyer_profile.account_balance - order.price
+		buyer_profile.save()
+		print(buyer_profile.account_balance)
 		seller_profile.account_balance = seller_profile.account_balance + order.price
+		seller_profile.save()
+		print(seller_profile.account_balance)
 		sale.quantity = sale.quantity - order.quantity
 		sale.save()
 		new_item.save()
 		new_transaction.save()
-		buyer_profile.save()
-		seller_profile.save()
+		
+		
 		order.delete()
 		print('payment success')
 		return redirect('/')
@@ -111,4 +113,17 @@ def postSale(request):
 
 @login_required
 def accountManage(request):
-	return render(request, 'cbayweb/accountManage.html',{})
+	context={}
+	current_user = get_object_or_404(User, id=request.user.id)
+	user_profile = get_object_or_404(Profile, user=current_user)
+	transactions = Transaction.objects.filter(buyer = request.user)
+	sales = Sale.objects.filter(seller = request.user)
+	context['user'] = current_user
+	context['profile'] = user_profile
+	context['transactions'] = transactions 
+	context['sales'] = sales
+	return render(request, 'cbayweb/accountManage.html',context)
+
+
+
+

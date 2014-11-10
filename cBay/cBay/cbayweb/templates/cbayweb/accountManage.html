@@ -37,11 +37,14 @@
 									<span><img alt="70x70" src="http://lorempixel.com/150/150/" class="img-thumbnail"></span>
 								</div>
 								<div class = "col-md-7 column ">
-									<h5>Item 1 title (bought)</h5>
-									Price : $30 <br>
-									Purchage Time: 2014-10-05 <br>
-									Seller Link: Lucy Wang  <br>
-									<button type="submit"> Contact Seller </button>
+									{% for transaction in transactions %}
+									<h5>Item Name: {{transaction.sale.name}}(bought)</h5>
+									Price : ${{transaction.sale.price}} <br>
+									Quantity: {{transaction.quantity}}<br>
+									Purchage Time: {{transaction.time}} <br>
+									Seller Link: {{transaction.sale.seller}}  <br>
+									<button type="button" class="btn btn-primary"> Contact Seller </button>
+									{% endfor %}
 								</div>				 
 							</div>
 						</div>
@@ -54,11 +57,15 @@
 									<span><img alt="70x70" src="http://lorempixel.com/150/150/" class="img-thumbnail"></span>
 								</div>
 								<div class = "col-md-7 column ">
-									<h5>Item 1 title (sold)</h5>
-									Price : $1130 <br>
-									Purchage Time: 2014-06-05 <br>
-									Seller Link: Lucy Yang  <br>
-									<button type="submit"> Contact Seller </button>
+								{% for sale in sales %}
+									<h5>Item Name: {{sale.name}}(sold)</h5>
+									Price : ${{sale.price}} <br>
+									Start Time: {{sale.start_time}} <br>
+									End Time: {{sale.end_time}} <br>
+									Quantity: {{sale.quantity}} <br>
+									Seller Link: {{sale.seller}}  <br>
+									<button type="button" class="btn btn-primary"> Contact Seller </button>
+									{% endfor %}
 								</div>				 
 							</div>
 						</div>
@@ -68,10 +75,11 @@
 		</div>
 
 		<div class="tab-pane" id="panel-message">
-		implement later...
+			implement later...
 		</div>
 		<div class="tab-pane" id="panel-account">
-		implement later...
+			<p>User Name: {{user.username}}</p>
+			<p>Account Balance: {{profile.account_balance}}</p>
 		</div>
 		<script type="text/javascript">
 			$('#pills-accountManag-Tabs a').click(function (e) {
@@ -81,5 +89,5 @@
 		</script>
 	</div>
 </div>
-	{% endblock %}
+{% endblock %}
 

@@ -48,6 +48,7 @@ class Profile(models.Model):
 
 class Transaction(models.Model):
 	item = models.ForeignKey(Item, null=True)
+	sale = models.ForeignKey(Sale)
 	seller = models.ForeignKey(User,related_name='%(class)s_buyer')
 	buyer = models.ForeignKey(User,related_name='%(class)s_seller')
 	time = models.DateTimeField(default=datetime.now)
