@@ -1,0 +1,73 @@
+{% extends "cbayweb/base.html" %}
+
+{% block title %}cBay postItem{% endblock %}
+
+{% block content %}
+{{ form.non_field_errors }}
+<p>{{ form.end_time.errors.as_text }}</p>
+<form enctype="multipart/form-data" action="{% url 'postAuction' %}" method='post'>
+	<div class="row clearfix">
+		<div class="col-md-12 column well well-lg panel panel-default">
+			<div class="panel-heading">
+				Describe your item
+			</div>
+			<div class="panel-body">
+				<p>{{ form.name.errors.as_text }}</p>
+				Title: {{form.name}}<br>
+				<br>
+				<p>{{ form.item_pic.errors.as_text }}</p>
+				Photo: {{form.item_pic}}
+				<br>
+				<p>{{ form.description.errors.as_text }}</p>
+				Description: {{form.description}}
+			</div>
+		</div>
+
+		<div class="row clearfix">
+			<div class="col-md-12 column well well-lg panel panel-default">		
+				<div class="panel-heading">
+					Select format and price 
+				</div>
+				<div class="panel-body">	
+					<div> 
+						List as:
+						<select class="selectpicker">
+							<option>Auction</option>
+						</select>
+					</div>
+					<br>
+					<p>{{ form.start_price.errors.as_text }}</p>
+					Start Price: {{form.start_price}}
+					<br>
+					<div>
+						List duration: 
+						<select class="selectpicker">
+							<option>7 days</option>
+							<option>14 days</option>
+							<option>21 days</option>
+						</select>
+						<p>{{ form.start_time.errors.as_text }}</p>
+						StartTime: {{form.start_time}}
+						<p>{{ form.end_time.errors.as_text }}</p>
+						EndTime: {{form.end_time}}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row clearfix">
+			<div class="col-md-12 column well well-lg panel panel-default">
+				<div class="panel-heading">
+					Shipping Info 
+				</div>
+				<div class="panel-body">
+					<p>{{ form.shipping_info.errors.as_text }}</p>
+					{{form.shipping_info}}
+				</div>					
+			</div>
+		</div>
+		<button type="submit" class="btn btn-primary pull-right"> Save </button>
+		{% csrf_token %}
+	</div>
+</form>   
+{% endblock %}
+

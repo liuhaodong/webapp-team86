@@ -63,9 +63,11 @@ class Auction(models.Model):
 	start_price = models.IntegerField()
 	seller = models.ForeignKey(User,related_name='%(class)s_seller')
 	start_time = models.DateTimeField(default=datetime.now)
-	end_time = models.DateTimeField()
+	end_time = models.DateTimeField(default=datetime.now)
 	is_ended = models.NullBooleanField(default=False)
-	winner = models.ForeignKey(User, blank=True,related_name='%(class)s_winner')
+	item_pic = models.ImageField(upload_to="item_pictures", blank=True)
+	shipping_info = models.CharField(max_length=2048)
+	winner = models.ForeignKey(User, null=True,related_name='%(class)s_winner')
 	def __unicode__(self):
 		return self.id
 

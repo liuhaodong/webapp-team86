@@ -30,3 +30,17 @@ class SaleModelForm(forms.ModelForm):
 		name = cleaned_data.get("name")
 		if name == '':
 			self.add_error(None, 'Item Name Must Not Be Empty')
+
+
+class AuctionModelForm(forms.ModelForm):
+	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control','placeholder':'Item Name'}))
+	description = forms.CharField(max_length=2048, widget=forms.Textarea(attrs={'class':'form-control'}))
+	shipping_info = forms.CharField(max_length=2048, widget=forms.Textarea(attrs={'class':'form-control'}))
+	class Meta:
+		model = Auction
+		fields = ('name','description','start_time','end_time','start_price','item_pic','shipping_info')
+	def clean(self):
+		cleaned_data = super(AuctionModelForm, self).clean()
+		name = cleaned_data.get("name")
+		if name == '':
+			self.add_error(None, 'Item Name Must Not Be Empty')

@@ -34,13 +34,13 @@ def viewAuction(request, auction_id):
 	auction = get_object_or_404(Auction, id=auction_id)
 	context = {}
 	context['auction'] = auction
-    bids = Bid.objects.filter(auction = auction).order_by('-price')
-    if len(bids) == 0:
-    	max_bid_price = auction.start_price
-    else:
-    	max_bid_price = bids[0].price
-    context['max_bid_price'] = max_bid_price
-    context['bids'] = bids
+	bids = Bid.objects.filter(auction = auction).order_by('-bid_price')
+	if len(bids) == 0:
+		max_bid_price = auction.start_price
+	else:
+		max_bid_price = bids[0].price
+	context['max_bid_price'] = max_bid_price
+	context['bids'] = bids
 	comments = []
 	context['comments'] = comments
 	return render(request, 'cbayweb/viewAuction.html',context)
@@ -127,6 +127,22 @@ def postSale(request):
 	else:
 		form = SaleModelForm()
 	return render(request, 'cbayweb/postItem.html',{'form':form})
+
+@login_required
+def postAuction(request):
+	if request.method == 'POST':
+		auction = Auction(seller= get_object_or_404(User, id = request.user.id))
+		form = AuctionModelForm(request.POST, request.FILES, instance=auction)
+		if form.is_valid():
+			new_auction = form.save()
+			print('New Auction Saved')
+			return redirect('/')
+		else:
+			print(form.errors)
+			return render(request,'cbayweb/postAuction.html',{'form':form})
+	else:
+		form = AuctionModelForm()
+	return render(request, 'cbayweb/postAuction.html',{'form':form})
 
 @login_required
 def accountManage(request):
