@@ -29,6 +29,15 @@ def viewSale(request, sale_id):
 	context['comments'] = comments
 	return render(request, 'cbayweb/viewSale.html',context)
 
+@login_required
+def viewAuction(request, auction_id):
+	auction = get_object_or_404(Auction, id=auction_id)
+	context = {}
+	context['auction'] = auction 
+	comments = []
+	context['comments'] = comments
+	return render(request, 'cbayweb/viewAuction.html',context)
+
 def register(request):
 	if request.method == 'POST':
 		form = RegisterForm(request.POST)
