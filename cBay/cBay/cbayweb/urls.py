@@ -4,6 +4,7 @@ from django.contrib import admin
 urlpatterns = patterns('',
     url(r'^homepage$','cbayweb.views.homepage',name='homepage'),
     url(r'^viewSale/(?P<sale_id>\d+)$','cbayweb.views.viewSale',name='viewSale'),
+    url(r'^viewAuction/(?P<auction_id>\d+)$','cbayweb.views.viewAuction',name='viewAuction'),
     url(r'^register$','cbayweb.views.register',name='register'),
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'cbayweb/login.html'}, name='login'),
     url(r'^logout$', 'django.contrib.auth.views.logout_then_login', name='logout'),
