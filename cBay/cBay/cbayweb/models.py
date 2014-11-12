@@ -71,7 +71,6 @@ class Auction(models.Model):
 
 class Bid(models.Model):
 	bidder = models.ForeignKey(User)
-	item = models.ForeignKey(Item)
 	auction = models.ForeignKey(Auction)
 	bid_price = models.FloatField()
 	bid_time = models.DateTimeField(default=datetime.now)
