@@ -100,9 +100,7 @@ def payOrder(request):
 		sale.quantity = sale.quantity - order.quantity
 		sale.save()
 		new_item.save()
-		new_transaction.save()
-		
-		
+		new_transaction.save()		
 		order.delete()
 		print('payment success')
 		return redirect('/')
