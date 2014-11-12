@@ -30,7 +30,7 @@ class Item(models.Model):
 	rating = models.IntegerField(default=0)
 	seller = models.ForeignKey(User,related_name='%(class)s_seller')
 	buyer = models.ForeignKey(User,related_name='%(class)s_buyer')
-	sale = models.ForeignKey(Sale)
+	sale = models.ForeignKey(Sale, blank=True)
 	item_pic = models.ImageField(upload_to="item_pictures", blank=True)
 	def __unicode__(self):
 		return self.name
@@ -58,11 +58,14 @@ class Transaction(models.Model):
 		return self.id
 
 class Auction(models.Model):
-	item = models.ForeignKey(Item)
+	name = models.CharField(max_length=256)
+	description = models.CharField(max_length=2048)
 	start_price = models.IntegerField()
-	seller = models.ForeignKey(User)
+	seller = models.ForeignKey(User,related_name='%(class)s_seller')
 	start_time = models.DateTimeField(default=datetime.now)
 	end_time = models.DateTimeField()
+	is_ended = models.NullBooleanField(default=False)
+	winner = models.ForeignKey(User, blank=True,related_name='%(class)s_winner')
 	def __unicode__(self):
 		return self.id
 
