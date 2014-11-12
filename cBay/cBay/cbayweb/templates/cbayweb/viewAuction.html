@@ -15,11 +15,11 @@
 	</div>
 	<div class="col-md-5 column well well-lg">
 		<h3>
-			Item Name: {{sale.name}}
+			Item Name: {{auction.name}}
 		</h3> 
-		<a href='#'><p>Item Seller: {{sale.seller}}</p></a>
+		<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
 		<p>Price: ${{sale.price}}</p> 	
-		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-content="User1: 300">Bid History</p></a><br><br><br><br>
+		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-content="{{auctions.}}: 300">Bid History</p></a><br><br><br><br>
 		<input>
 		<button type="button" class="btn btn-primary">Place Bid</button>
 		<script type="text/javascript">

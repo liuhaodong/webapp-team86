@@ -33,7 +33,9 @@ def viewSale(request, sale_id):
 def viewAuction(request, auction_id):
 	auction = get_object_or_404(Auction, id=auction_id)
 	context = {}
-	context['auction'] = auction 
+	context['auction'] = auction
+    bids = Bid.objects.filter(auction = auction)
+    context['bids'] = bids
 	comments = []
 	context['comments'] = comments
 	return render(request, 'cbayweb/viewAuction.html',context)
