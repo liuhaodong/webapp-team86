@@ -34,7 +34,12 @@ def viewAuction(request, auction_id):
 	auction = get_object_or_404(Auction, id=auction_id)
 	context = {}
 	context['auction'] = auction
-    bids = Bid.objects.filter(auction = auction)
+    bids = Bid.objects.filter(auction = auction).order_by('-price')
+    if len(bids) == 0:
+    	max_bid_price = auction.start_price
+    else:
+    	max_bid_price = bids[0].price
+    context['max_bid_price'] = max_bid_price
     context['bids'] = bids
 	comments = []
 	context['comments'] = comments

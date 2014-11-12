@@ -18,8 +18,8 @@
 			Item Name: {{auction.name}}
 		</h3> 
 		<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
-		<p>Price: ${{sale.price}}</p> 	
-		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-content="{{auctions.}}: 300">Bid History</p></a><br><br><br><br>
+		<p>Price: ${{max_bid_price}}</p> 	
+		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.price}} {% endfor %}">Bid History</p></a><br><br><br><br>
 		<input>
 		<button type="button" class="btn btn-primary">Place Bid</button>
 		<script type="text/javascript">
