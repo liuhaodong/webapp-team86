@@ -38,7 +38,7 @@ def viewAuction(request, auction_id):
 	if len(bids) == 0:
 		max_bid_price = auction.start_price
 	else:
-		max_bid_price = bids[0].price
+		max_bid_price = bids[0].bid_price
 	context['max_bid_price'] = max_bid_price
 	context['bids'] = bids
 	comments = []
@@ -85,6 +85,23 @@ def placeOrder(request):
 		return render(request, 'cbayweb/reviewOrder.html',context)
 	else:
 		return redirect('/')
+
+@login_required
+def placeBid(request):
+	if request.method == 'POST':
+		context = {}
+		my_auction=get_object_or_404(Auction, id=request.POST['auction_id'])
+		if (float)(request.POST['bid_price']) > my_auction.current_max_bid :
+			my_auction.current_max_bid = (float)(request.POST['bid_price'])
+			my_auction.save()
+			new_bid = Bid(bidder = request.user, auction=my_auction, bid_price=request.POST['bid_price'])
+			new_bid.save()
+			return redirect('viewAuction', auction_id=my_auction.id)
+		else:
+			return redirect('viewAuction', auction_id=my_auction.id)
+		print('new bid is saved')
+	else:
+		return redirect('viewAuction', auction_id=my_auction.id)
 
 @login_required
 def payOrder(request):

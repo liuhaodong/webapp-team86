@@ -18,10 +18,14 @@
 			Item Name: {{auction.name}}
 		</h3> 
 		<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
-		<p>Price: ${{max_bid_price}}</p> 	
-		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.price}} {% endfor %}">Bid History</p></a><br><br><br><br>
-		<input>
-		<button type="button" class="btn btn-primary">Place Bid</button>
+		<p>Current Bid: ${{max_bid_price}}</p> 	
+		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-html="true" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.bid_price}} <br>{% endfor %}">Bid History</p></a><br><br><br><br>
+		<form method="post" action="{% url 'placeBid' %}">
+			{% csrf_token %} 
+			<input type="hidden" name="auction_id"  value={{auction.id}} >
+			Your Bid: <input type="number" name="bid_price" min="1">
+			<button type="submit" class="btn btn-primary">Buy</button>
+		</form>		
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$("#bid-history").popover({
@@ -51,11 +55,11 @@
 			</ul>
 			<div class="tab-content well well-lg">
 				<div class="tab-pane active" id="panel-item-description">
-					<pre>{{sale.description}}
+					<pre>{{auction.description}}
 					</pre>
 				</div>
 				<div class="tab-pane" id="panel-shipping-info">
-					<pre>{{shipping_info}}</pre>
+					<pre>{{auction.shipping_info}}</pre>
 				</div>
 			</div>
 		</div>

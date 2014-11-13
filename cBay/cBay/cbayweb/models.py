@@ -60,7 +60,7 @@ class Transaction(models.Model):
 class Auction(models.Model):
 	name = models.CharField(max_length=256)
 	description = models.CharField(max_length=2048)
-	start_price = models.IntegerField()
+	start_price = models.FloatField(default=0)
 	seller = models.ForeignKey(User,related_name='%(class)s_seller')
 	start_time = models.DateTimeField(default=datetime.now)
 	end_time = models.DateTimeField(default=datetime.now)
@@ -68,6 +68,7 @@ class Auction(models.Model):
 	item_pic = models.ImageField(upload_to="item_pictures", blank=True)
 	shipping_info = models.CharField(max_length=2048)
 	winner = models.ForeignKey(User, null=True,related_name='%(class)s_winner')
+	current_max_bid = models.FloatField(null=True)
 	def __unicode__(self):
 		return self.id
 

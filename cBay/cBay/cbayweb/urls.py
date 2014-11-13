@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^postAuction$','cbayweb.views.postAuction',name='postAuction'),
     url(r'^accountManage$','cbayweb.views.accountManage',name='accountManage'),
     url(r'^placeOrder$','cbayweb.views.placeOrder',name='placeOrder'),
+    url(r'^placeBid$','cbayweb.views.placeBid',name='placeBid'),
     url(r'^payOrder$','cbayweb.views.payOrder',name='payOrder'),
     url(r'^item_picture/(?P<sale_id>\d+)$', 'cbayweb.views.get_item_picture', name='item_picture'),
 )
