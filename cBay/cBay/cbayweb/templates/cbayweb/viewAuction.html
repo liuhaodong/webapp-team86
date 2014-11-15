@@ -2,6 +2,7 @@
 {% block titile %} cBay ViewItem {% endblock %}
 {% block content%}
 
+<script src="/static/js/cbayweb/check_auction.js" type="text/javascript" charset="utf-8"></script>
 <div class="row clearfix">
 	<div class="col-md-12 column">
 		<h3>
@@ -11,21 +12,40 @@
 </div>
 <div class="row clearfix">
 	<div class="col-md-4 column">
-		<img src="http://lorempixel.com/300/300/">
+		<img src="{% url 'auction_picture' auction.id %}" style="height:300px">
 	</div>
-	<div class="col-md-5 column well well-lg">
+	<div class="col-md-5 column well well-lg" id="viewAuctionContent">
+		{% if auction.is_ended %}
+		<div class='alert alert-danger' role='alert' id="auction_ended_alert" ><p>This Auction has ended</p></div>
+		<h2 class='bg-success'>Winner: {{auction.winner}}</h2>
+		{% endif %}
 		<h3>
-			Item Name: {{auction.name}}
+			Item Name: {{auction.name}}<br>
 		</h3> 
 		<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
 		<p>Current Bid: ${{max_bid_price}}</p> 	
 		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-html="true" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.bid_price}} <br>{% endfor %}">Bid History</p></a><br><br><br><br>
-		<form method="post" action="{% url 'placeBid' %}">
+
+		{% if not auction.is_ended%}
+		<form method="post" action="{% url 'placeBid' %}" id="placeBidForm">
 			{% csrf_token %} 
-			<input type="hidden" name="auction_id"  value={{auction.id}} >
+			<input type="hidden" name="auction_id" id="hidden_auction_id" value={{auction.id}} >
 			Your Bid: <input type="number" name="bid_price" min="1">
-			<button type="submit" class="btn btn-primary">Buy</button>
+			<button type="submit" class="btn btn-primary">Bid</button>
 		</form>		
+		{% endif %}
+		
+		{% if auction.winner == user %}
+		{% if not auction.is_paid %}
+		<form method="post" action="{% url 'buyAuction' %}" id="buyAuctionButton">
+			{% csrf_token %} 
+			<input type="hidden" name="auction_id" id="hidden_auction_id" value={{auction.id}} >
+			<button type="submit" class="btn btn-primary">Buy</button>
+		</form>
+		{% else %}
+		<h2 class='bg-success'>You have paid this auction</h2>
+		{% endif%}
+		{% endif %}
 		<script type="text/javascript">
 			$(document).ready(function(){
 				$("#bid-history").popover({
@@ -66,14 +86,15 @@
 	</div>
 </div>
 
-<h1>------------------------------------------------------------------------</h1>
+<h1>-----------------------------------------------------------------------------</h1>
+
 <div class="row clearfix well well-lg">
 	<div class="col-md-12 column">
 		<h2>
 			Comments
 		</h2>
 		<p>
-			Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
+			
 		</p>
 		<p>
 			<a class="btn" href="#">View details »</a>

@@ -6,13 +6,17 @@ class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def handle(self, *args, **options):
-        for poll_id in args:
-            #try:
-            #    poll = Poll.objects.get(pk=int(poll_id))
-            #except Poll.DoesNotExist:
-            #    raise CommandError('Poll "%s" does not exist' % poll_id)
-
-            #poll.opened = False
-            #poll.save() file folder take the whole to you
-
-            self.stdout.write('Successfully closed poll "%s"' % poll_id)
+        print(datetime.now())
+        tmp_auctions = Auction.objects.filter(end_time__lte=datetime.now(), is_ended = False)
+        for auction in tmp_auctions:
+            winning_bids = Bid.objects.filter(bid_price = auction.current_max_bid, auction=auction)
+            if winning_bids.count() == 0:
+                self.stdout.write("hahahahah", ending='')
+                auction.is_ended = True
+                auction.save()
+            else:
+                self.stdout.write("find an unended auction", ending='')
+                winning_bid = winning_bids[0]
+                auction.winner = winning_bid.bidder
+                auction.is_ended = True
+                auction.save()

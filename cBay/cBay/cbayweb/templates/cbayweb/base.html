@@ -55,8 +55,12 @@
 								<a href="{% url 'homepage' %}">Homepage</a>
 							</li>
 
-							<li>
-								<a href="{% url 'postSale' %}">Sells</a>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Sell<strong class="caret"></strong></a>
+								<ul class="dropdown-menu">
+									<li><a href="{% url 'postSale' %}">Fixed Price</a></li>
+									<li><a href="{% url 'postAuction' %}">Auction</a></li>
+								</ul>
 							</li>
 
 							<li>

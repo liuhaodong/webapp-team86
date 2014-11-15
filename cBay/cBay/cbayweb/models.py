@@ -35,25 +35,12 @@ class Item(models.Model):
 	def __unicode__(self):
 		return self.name
 
-
-
 class Profile(models.Model):
 	id_picture = models.ImageField(upload_to="cbay_id_photos", blank=True)
 	address = models.CharField(max_length=256)
 	phone  = models.CharField(max_length=128)
 	user = models.OneToOneField(User)
 	account_balance = models.FloatField(default = 5000)
-	def __unicode__(self):
-		return self.id
-
-class Transaction(models.Model):
-	item = models.ForeignKey(Item, null=True)
-	sale = models.ForeignKey(Sale)
-	seller = models.ForeignKey(User,related_name='%(class)s_buyer')
-	buyer = models.ForeignKey(User,related_name='%(class)s_seller')
-	time = models.DateTimeField(default=datetime.now)
-	price = models.FloatField(default=0)
-	quantity = models.IntegerField(default=1)
 	def __unicode__(self):
 		return self.id
 
@@ -69,6 +56,7 @@ class Auction(models.Model):
 	shipping_info = models.CharField(max_length=2048)
 	winner = models.ForeignKey(User, null=True,related_name='%(class)s_winner')
 	current_max_bid = models.FloatField(null=True)
+	is_paid = models.NullBooleanField(default=False)
 	def __unicode__(self):
 		return self.id
 
@@ -81,7 +69,8 @@ class Bid(models.Model):
 		return self.id
 
 class Order(models.Model):
-	sale = models.ForeignKey(Sale)
+	sale = models.ForeignKey(Sale, null=True)
+	auction = models.ForeignKey(Auction, null=True)
 	buyer = models.ForeignKey(User)
 	time = models.DateTimeField(default=datetime.now)
 	shipping_address = models.CharField(max_length=2048)
@@ -91,3 +80,14 @@ class Order(models.Model):
 		return self.id
 
 
+class Transaction(models.Model):
+	order = models.ForeignKey(Order, null=True)
+	sale = models.ForeignKey(Sale, null=True)
+	auction = models.ForeignKey(Auction, null=True)
+	seller = models.ForeignKey(User,related_name='%(class)s_buyer')
+	buyer = models.ForeignKey(User,related_name='%(class)s_seller')
+	time = models.DateTimeField(default=datetime.now)
+	price = models.FloatField(default=0)
+	quantity = models.IntegerField(default=1)
+	def __unicode__(self):
+		return self.id

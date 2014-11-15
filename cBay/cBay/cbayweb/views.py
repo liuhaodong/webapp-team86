@@ -10,8 +10,12 @@ from django.http import HttpResponse, Http404
 # Used to create and manually log in a user
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
+from django.core import serializers
 from forms import *
 from mimetypes import guess_type
+from django.utils import timezone
+import json
+import json as simplejson
 
 # Create your views here.
 @login_required
@@ -76,11 +80,9 @@ def placeOrder(request):
 	if request.method == 'POST':
 		context = {}
 		my_sale=get_object_or_404(Sale, id=request.POST['sale_id'])
-		print(my_sale.name)
 		new_order = Order(buyer = request.user, sale=my_sale, quantity = request.POST['sale_quantity'])
 		new_order.price = (float)(new_order.sale.price) * (float)(new_order.quantity)
 		new_order.save()
-		print('new order is saved')
 		context['order'] = new_order
 		return render(request, 'cbayweb/reviewOrder.html',context)
 	else:
@@ -91,7 +93,7 @@ def placeBid(request):
 	if request.method == 'POST':
 		context = {}
 		my_auction=get_object_or_404(Auction, id=request.POST['auction_id'])
-		if (float)(request.POST['bid_price']) > my_auction.current_max_bid :
+		if (float)(request.POST['bid_price']) > my_auction.current_max_bid and timezone.now() < my_auction.end_time:
 			my_auction.current_max_bid = (float)(request.POST['bid_price'])
 			my_auction.save()
 			new_bid = Bid(bidder = request.user, auction=my_auction, bid_price=request.POST['bid_price'])
@@ -101,30 +103,41 @@ def placeBid(request):
 			return redirect('viewAuction', auction_id=my_auction.id)
 		print('new bid is saved')
 	else:
-		return redirect('viewAuction', auction_id=my_auction.id)
+		return redirect('/')
 
 @login_required
 def payOrder(request):
 	if request.method == 'POST':
 		order = get_object_or_404(Order, id = request.POST['order_id'])
 		buyer_profile = get_object_or_404(Profile, user = order.buyer)
-		seller_profile = get_object_or_404(Profile, user = order.sale.seller)
-		print(seller_profile.id)
-		sale = order.sale
-		new_item = Item(sale=sale, sold_price=sale.price, name=sale.name, description=sale.description, buyer=request.user, seller= sale.seller, list_time = sale.start_time)
-		new_transaction = Transaction(item = new_item, sale=sale, quantity=order.quantity, price = order.price, seller = sale.seller, buyer=request.user)
-		buyer_profile.account_balance = buyer_profile.account_balance - order.price
-		buyer_profile.save()
-		print(buyer_profile.account_balance)
-		seller_profile.account_balance = seller_profile.account_balance + order.price
-		seller_profile.save()
-		print(seller_profile.account_balance)
-		sale.quantity = sale.quantity - order.quantity
-		sale.save()
-		new_item.save()
-		new_transaction.save()		
-		order.delete()
-		print('payment success')
+		if order.sale:
+			seller_profile = get_object_or_404(Profile, user = order.sale.seller)
+			sale = order.sale
+			new_transaction = Transaction(sale=sale, quantity=order.quantity, price = order.price, seller = sale.seller, buyer=request.user)
+			buyer_profile.account_balance = buyer_profile.account_balance - order.price
+			buyer_profile.save()
+			print(buyer_profile.account_balance)
+			seller_profile.account_balance = seller_profile.account_balance + order.price
+			seller_profile.save()
+			print(seller_profile.account_balance)
+			sale.quantity = sale.quantity - order.quantity
+			sale.save()
+			new_transaction.save()		
+			order.delete()
+			print('payment success')
+		else:
+			seller_profile = get_object_or_404(Profile, user = order.auction.seller)
+			auction = order.auction
+			new_transaction = Transaction(auction=auction, quantity=order.quantity, price = order.price, seller = auction.seller, buyer=request.user)
+			buyer_profile.account_balance = buyer_profile.account_balance - order.price
+			buyer_profile.save()
+			seller_profile.account_balance = seller_profile.account_balance + order.price
+			seller_profile.save()
+			auction.is_paid = True
+			auction.save()
+			new_transaction.save()		
+			order.delete()
+			print('payment success')
 		return redirect('/')
 	else:
 		return redirect('/')
@@ -182,5 +195,36 @@ def get_item_picture(request, sale_id):
 	content_type = guess_type(sale.item_pic.name)
 	return HttpResponse(sale.item_pic, content_type=content_type)
 
+@login_required
+def get_auction_picture(request, auction_id):
+	auction = get_object_or_404(Auction, id=auction_id)
+	if not auction.item_pic:
+		raise Http404
+	content_type = guess_type(auction.item_pic.name)
+	return HttpResponse(auction.item_pic, content_type=content_type)	
 
+@login_required
+def check_auction(request, auction_id):
+	auction = get_object_or_404(Auction, id = auction_id)
+	auction_json = {}
+	auction_json['is_ended'] = auction.is_ended
+	auction_json['current_max_bid'] = auction.current_max_bid
+	auction_json['winner_name'] = auction.winner.username
+	auction_json['winner_id'] = auction.winner.id
+	return HttpResponse(json.dumps(auction_json), content_type = "application/json")
 
+@login_required
+def buy_auction(request):
+	if request.method == 'POST':
+		context = {}
+		auction = get_object_or_404(Auction, id = request.POST['auction_id'])
+		if request.user == auction.winner:
+			new_order = Order(buyer = request.user, auction=auction, quantity = 1)
+			new_order.price = auction.current_max_bid;
+			new_order.save()
+			context['order'] = new_order
+			return render(request, 'cbayweb/reviewOrder.html',context)
+		else:
+			return redirect('/')
+	else:
+		return redirect('/')
