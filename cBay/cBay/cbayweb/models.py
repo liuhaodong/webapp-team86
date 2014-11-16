@@ -5,6 +5,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+CATEGORY_CHOICES = {
+	('ELCT','Electronic'),
+	('OTHERS','Others'),
+	('GENERAL','General'),
+}
 
 class Sale(models.Model):
 	name = models.CharField(max_length=256)
@@ -18,6 +23,7 @@ class Sale(models.Model):
 	price = models.FloatField(default=0)
 	item_pic = models.ImageField(upload_to="item_pictures", blank=True)
 	shipping_info = models.CharField(max_length=2048)
+	category = models.CharField(max_length = 256, choices = CATEGORY_CHOICES)
 	def __unicode__(self):
 		return self.name
 
