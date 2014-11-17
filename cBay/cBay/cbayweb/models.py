@@ -46,7 +46,9 @@ class Profile(models.Model):
 	address = models.CharField(max_length=256)
 	phone  = models.CharField(max_length=128)
 	user = models.OneToOneField(User)
+	rating = models.FloatField(default = 1)
 	account_balance = models.FloatField(default = 5000)
+	self_description = models.CharField(max_length = 256, blank=True)
 	def __unicode__(self):
 		return self.id
 

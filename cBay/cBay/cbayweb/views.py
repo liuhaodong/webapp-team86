@@ -76,6 +76,24 @@ def register(request):
 	return render(request, 'cbayweb/register.html',{'form':form})
 
 @login_required
+def editProfile(request):
+	if request.method == 'POST':
+		form = ProfileModelForm(request.POST, request.FILES)
+		if form.is_valid():
+			user_profile = Profile.objects.get(user = request.user)
+			user_profile.id_picture = form.cleaned_data['id_picture']
+			user_profile.address = form.cleaned_data['address']
+			user_profile.phone = form.cleaned_data['phone']
+			user_profile.self_description = form.cleaned_data['self_description']
+			user_profile.save()
+			return redirect('accountManage')
+		else:
+			return render(request, 'cbayweb/editProfile.html', {'form': form})
+	else:
+		form = ProfileModelForm()
+		return render(request, 'cbayweb/editProfile.html', {'form': form})
+
+@login_required
 def reviewOrder(request):
 	return render(request, 'cbayweb/reviewOrder.html',{})
 
@@ -207,6 +225,14 @@ def get_auction_picture(request, auction_id):
 		raise Http404
 	content_type = guess_type(auction.item_pic.name)
 	return HttpResponse(auction.item_pic, content_type=content_type)	
+
+@login_required
+def id_picture(request, id):
+	profile = get_object_or_404(Profile, id=id)
+	if not profile.id_picture:
+		raise Http404
+	content_type = guess_type(profile.id_picture.name)
+	return HttpResponse(profile.id_picture, content_type=content_type)
 
 @login_required
 def check_auction(request, auction_id):

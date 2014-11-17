@@ -44,3 +44,10 @@ class AuctionModelForm(forms.ModelForm):
 		name = cleaned_data.get("name")
 		if name == '':
 			self.add_error(None, 'Item Name Must Not Be Empty')
+
+class ProfileModelForm(forms.ModelForm):
+	address = forms.CharField(max_length=256, widget=forms.Textarea(attrs={'class':'form-control'}))
+	self_description = forms.CharField(max_length=256, widget=forms.Textarea(attrs={'class':'form-control'}))
+	class Meta:
+		model = Profile
+		fields = ('id_picture', 'address', 'phone', 'self_description')
