@@ -6,15 +6,15 @@
 <div class="row clearfix">
 	<div class="col-md-12 column">
 		<h3>
-			<h3>Category > Detailed Category</h3>
+			<h3>Category > {{ auction.category }}</h3>
 		</h3>
 	</div>
 </div>
 <div class="row clearfix">
-	<div class="col-md-4 column">
-		<img src="{% url 'auction_picture' auction.id %}" style="height:300px">
+	<div class="col-md-6 column">
+		<img src="{% url 'auction_picture' auction.id %}" style="height:300px" class="img-thumbnail">
 	</div>
-	<div class="col-md-5 column well well-lg" id="viewAuctionContent">
+	<div class="col-md-6 column well well-lg" id="viewAuctionContent">
 		{% if auction.is_ended %}
 		<div class='alert alert-danger' role='alert' id="auction_ended_alert" ><p>This Auction has ended</p></div>
 		<h2 class='bg-success'>Winner: {{auction.winner}}</h2>
@@ -59,12 +59,10 @@
 			});
 		</script>
 	</div>
-	<div class="col-md-3 column">
-	</div>
 </div><br><br>
 <div class="row clearfix">
 	<div class="col-md-12 column">
-		<div class="tabbable" id="tabs-552316">
+		<div class="tabbable">
 			<ul class="nav nav-tabs">
 				<li class="active">
 					<a href="#panel-item-description" data-toggle="tab">Item Description</a>

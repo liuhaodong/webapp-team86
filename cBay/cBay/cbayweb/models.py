@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 CATEGORY_CHOICES = {
-	('ELCT','Electronic'),
+	('ELECTRONIC','Electronic'),
 	('OTHERS','Others'),
 	('GENERAL','General'),
 }
@@ -23,7 +23,7 @@ class Sale(models.Model):
 	price = models.FloatField(default=0)
 	item_pic = models.ImageField(upload_to="item_pictures", blank=True)
 	shipping_info = models.CharField(max_length=2048)
-	category = models.CharField(max_length = 256, choices = CATEGORY_CHOICES)
+	category = models.CharField(max_length = 256, choices = CATEGORY_CHOICES, default='OTHERS')
 	def __unicode__(self):
 		return self.name
 
@@ -63,6 +63,7 @@ class Auction(models.Model):
 	winner = models.ForeignKey(User, null=True,related_name='%(class)s_winner')
 	current_max_bid = models.FloatField(null=True)
 	is_paid = models.NullBooleanField(default=False)
+	category = models.CharField(max_length = 256, choices = CATEGORY_CHOICES, default='OTHERS')
 	def __unicode__(self):
 		return self.id
 

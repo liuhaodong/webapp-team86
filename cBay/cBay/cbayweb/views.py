@@ -17,12 +17,16 @@ from django.utils import timezone
 import json
 import json as simplejson
 
+
 # Create your views here.
 @login_required
 def homepage(request):
 	sales = Sale.objects.all()
-	print(len(sales))
-	return render(request, 'cbayweb/homepage.html',{'sales': sales})
+	categories = []
+	for item in CATEGORY_CHOICES:
+		categories.append(item[0])
+	auctions = Auction.objects.filter(is_ended = False)
+	return render(request, 'cbayweb/homepage.html',{'sales': sales,'categories':categories,'auctions': auctions})
 
 @login_required
 def viewSale(request, sale_id):
@@ -209,8 +213,9 @@ def check_auction(request, auction_id):
 	auction_json = {}
 	auction_json['is_ended'] = auction.is_ended
 	auction_json['current_max_bid'] = auction.current_max_bid
-	auction_json['winner_name'] = auction.winner.username
-	auction_json['winner_id'] = auction.winner.id
+	if auction.is_ended:
+		auction_json['winner_name'] = auction.winner.username
+		auction_json['winner_id'] = auction.winner.id
 	return HttpResponse(json.dumps(auction_json), content_type = "application/json")
 
 @login_required
@@ -228,3 +233,9 @@ def buy_auction(request):
 			return redirect('/')
 	else:
 		return redirect('/')
+
+@login_required
+def get_items_by_category(request, category):
+	sales_data = serializers.serialize('json', Sale.objects.filter(category = category), fields=('name','id','seller','price'))
+	print(sales_data)
+	return HttpResponse(sales_data, content_type = "application/json")

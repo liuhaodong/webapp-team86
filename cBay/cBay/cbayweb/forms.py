@@ -36,10 +36,9 @@ class AuctionModelForm(forms.ModelForm):
 	name = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class' : 'form-control','placeholder':'Item Name'}))
 	description = forms.CharField(max_length=2048, widget=forms.Textarea(attrs={'class':'form-control'}))
 	shipping_info = forms.CharField(max_length=2048, widget=forms.Textarea(attrs={'class':'form-control'}))
-	category = forms.CharField(max_length=256, widget=forms.Select(choices=CATEGORY_CHOICES, attrs={'class':'dropdown-menu'}))
 	class Meta:
 		model = Auction
-		fields = ('name','description','start_time','end_time','start_price','item_pic','shipping_info')
+		fields = ('name','description','start_time','end_time','start_price','item_pic','shipping_info','category')
 	def clean(self):
 		cleaned_data = super(AuctionModelForm, self).clean()
 		name = cleaned_data.get("name")

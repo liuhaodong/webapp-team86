@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<script src="/static/js/cbayweb/update_category.js" type="text/javascript" charset="utf-8" async defer></script>
 <div class="row clearfix">
 	<div class="col-md-12 column well well-lg">
 		<div>
@@ -11,16 +12,16 @@
 		</div>
 		<div class="DocumentListHorizontal">
 			<ul class="list-inline">
-                {% for sale in sales %}
-                <li class="DocumentItem">
-                	{% if sale.item_pic %}
-                	<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
-                	{% else %}
-                	<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
-                	{% endif %}
-                	<p>{{sale.name}}</p>
-                </li>
-                {% endfor %}
+				{% for sale in sales %}
+				<li class="DocumentItem">
+					{% if sale.item_pic %}
+					<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
+					{% else %}
+					<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+					{% endif %}
+					<p>{{sale.name}}</p>
+				</li>
+				{% endfor %}
 			</ul>
 		</div>
 	</div>
@@ -33,51 +34,71 @@
 			<h4> Best Selling Items</h4>
 		</div>
 		<div class="col-md-3 column">
-			<select class="selectpicker">
-				<optgroup label="Picnic">
-					<option>Mustard</option>
-					<option>Ketchup</option>
-					<option>Relish</option>
-				</optgroup>
-				<optgroup label="Camping">
-					<option>Tent</option>
-					<option>Flashlight</option>
-					<option>Toilet Paper</option>
-				</optgroup>
+			<select class="selectpicker" id="categorypicker">
+				{% for category in categories %}
+				<option>{{category}}</option>
+				{% endfor %}
 			</select>
 		</div>
-		<div class="col-md-9 column">
-			<div class="col-md-6 column">
-				<div class="DocumentListVertical">
-					<ul>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
+		<div class="col-md-9 column" >
+			<div class="col-md-12 column">
+				<div class="tabbable" id="tabs">
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#panel-fixed-price" data-toggle="tab">Fixed Price</a>
 						</li>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
+						<li>
+							<a href="#panel-auction" data-toggle="tab">Auction</a>
 						</li>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-						</li>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-						</li>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-						</li>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-						</li>
-						<li class="DocumentItem">
-							<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-						</li>						
 					</ul>
+					<div class="tab-content " id="items_by_category">
+						<div class="tab-pane" id="panel-fixed-price">
+							{% for sale in sales %}
+							<div class="col-md-12 column well well-lg" >
+								<div class="col-md-8 column">
+									{% if sale.item_pic %}
+									<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									{% else %}
+									<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+									{% endif %}
+									<p>Seller: {{sale.seller.username}}</p>
+								</div>
+								<div class="col-md-4 column">
+									<h1>Name: {{sale.name}}</h1>
+									<h2>Price: {{sale.price}}</h2>
+									<h3>Category: {{sale.category}}</h3>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						<div class="tab-pane" id="panel-auction">
+							{% for auction in auctions %}
+							<div class="col-md-12 column well well-lg" >
+								<div class="col-md-8 column">
+									{% if auction.item_pic %}
+									<span><a href="{% url 'viewAuction' auction.id %}"><img src="{% url 'auction_picture' auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									{% else %}
+									<span><a href="{% url 'viewAuction' auction.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+									{% endif %}
+									<p>Seller: {{auction.seller.username}}</p>
+								</div>
+								<div class="col-md-4 column">
+									<h1>Name: {{auction.name}}</h1>
+									<h2>Current Max Bid: {{auction.current_max_bid}}</h2>
+									<h3>Category: {{auction.category}}</h3>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
 				</div>
 			</div>
 			
 		</div>
 	</div>
 </div>
+
+
 <div class="row clearfix">
 	<div class="col-md-12 column well well-lg">
 		<div>
