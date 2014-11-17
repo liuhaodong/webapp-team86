@@ -9,17 +9,15 @@
                   <div class="col-md-6 column">
                         <div><h4> Ship to: </h4></div>
                         {{order.buyer.username}} <br>
-                        5000 BAYARD ST APT 46 <br>
-                        PITTSBURGH, PA 15213-2732 <br>
-                        United States <br>
-                        Phone: 412-111-1111 <br><br>
-                        <div><h4>PAYPAL</h4></div><br>
-                        PayPal Credit<br>
-                        12 month financing... <br>
+                        <pre>{{order.shipping_address}}</pre>
+                        <div><h4>Account Info</h4></div>
+                        Your Account Balance<br>
+                        ${{buyer_profile.account_balance}}<br>
                   </div>
                   <div class="col-md-6 column">
                         <h2>Order Description</h2>
                         <p>Item Name: {{order.sale.name}}{{order.auction.name}}</p>
+                        <p>Item Price: {{order.sale.price}}{{order.auction.current_max_bid}}
                         <p>Quantity: {{order.quantity}}</p>
                   </div>
                   

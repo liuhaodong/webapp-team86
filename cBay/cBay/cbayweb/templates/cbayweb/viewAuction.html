@@ -23,6 +23,8 @@
 			Item Name: {{auction.name}}<br>
 		</h3> 
 		<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
+		<p>Start Time: {{auction.start_time}}</p>
+		<p>End Time: {{auction.end_time}}</p>
 		<p>Current Bid: ${{max_bid_price}}</p> 	
 		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-html="true" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.bid_price}} <br>{% endfor %}">Bid History</p></a><br><br><br><br>
 

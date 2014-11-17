@@ -104,9 +104,12 @@ def placeOrder(request):
 		context = {}
 		my_sale=get_object_or_404(Sale, id=request.POST['sale_id'])
 		new_order = Order(buyer = request.user, sale=my_sale, quantity = request.POST['sale_quantity'])
+		buyer_profile = get_object_or_404(Profile, user = request.user)
+		new_order.shipping_address = buyer_profile.address
 		new_order.price = (float)(new_order.sale.price) * (float)(new_order.quantity)
 		new_order.save()
 		context['order'] = new_order
+		context['buyer_profile'] = buyer_profile
 		return render(request, 'cbayweb/reviewOrder.html',context)
 	else:
 		return redirect('/')
@@ -239,11 +242,15 @@ def accountManage(request):
 	current_user = get_object_or_404(User, id=request.user.id)
 	user_profile = get_object_or_404(Profile, user=current_user)
 	transactions = Transaction.objects.filter(buyer = request.user)
+	auctions = Auction.objects.filter(seller = request.user)
 	sales = Sale.objects.filter(seller = request.user)
+	won_auctions = Auction.objects.filter(winner = request.user)
 	context['user'] = current_user
 	context['profile'] = user_profile
 	context['transactions'] = transactions 
 	context['sales'] = sales
+	context['auctions'] = auctions
+	context['won_auctions'] = won_auctions
 	return render(request, 'cbayweb/accountManage.html',context)
 
 @login_required
@@ -288,9 +295,12 @@ def buy_auction(request):
 		auction = get_object_or_404(Auction, id = request.POST['auction_id'])
 		if request.user == auction.winner:
 			new_order = Order(buyer = request.user, auction=auction, quantity = 1)
+			buyer_profile = get_object_or_404(Profile, user = request.user)
+			new_order.shipping_address = buyer_profile.address
 			new_order.price = auction.current_max_bid;
 			new_order.save()
 			context['order'] = new_order
+			context['buyer_profile'] = buyer_profile
 			return render(request, 'cbayweb/reviewOrder.html',context)
 		else:
 			return redirect('/')
@@ -323,7 +333,6 @@ def searchItem(request):
 		print('category is none')
 		sales = Sale.objects.filter( Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword))
 		auctions = Auction.objects.filter(Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword))
-		print(sales)
 		return render(request, 'cbayweb/searchResult.html',{'sales': sales,'categories':categories,'auctions': auctions, 'keyword':keyword })
 	else:
 		sales = Sale.objects.filter( Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword) , category = category)

@@ -17,21 +17,22 @@
 			<div class="col-md-12 column panel panel-default">
 				<br>
 				<div>
-					<h4  class="pull-left">Seller Info: User 1</h4>
+					<h4  class="pull-left">User Name: {{user.username}}</h4>
 				</div>
 				<br><br>
-				<div class = "col-md-2 column " id="pills-accountManag-Tabs">
+				<div class = "col-md-3 column " id="pills-accountManag-Tabs">
 					<ul class="nav nav-pills nav-stacked well well-lg " role="tablist">  
 						<li role="presentation" class="active"><a href="#panel-buy">Buy</a></li>
 						<li role="presentation"><a href="#panel-sell">Sell</a></li>
+						<li role="presentation"><a href="#panel-won-auctions">Won Auctions</a></li>
 						<li role="presentation"><a href="#panel-watchlist">Wacth List</a></li>
 					</ul>
 				</div>
 
 				<!--pills-panel-content-->
-				<div class = "tab-content">
+				<div class = "tab-content col-md-9 column">
 					<div class="tab-pane active" id = "panel-buy">
-						<div class = "col-md-10 column well well-lg">
+						<div class = " well well-lg">
 							{% for transaction in transactions %}
 							{% if transaction.sale %}
 							<div class = "col-md-12 column">
@@ -61,13 +62,13 @@
 							<div class = "col-md-12 column">
 								<div class = "col-md-5 column ">
 									{% if transaction.auction.item_pic %}
-									<span><a href="{% url 'viewAuction' transaction.auction.id %}"><img src="{% url 'item_picture' transaction.auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									<span><a href="{% url 'viewAuction' transaction.auction.id %}"><img src="{% url 'auction_picture' transaction.auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
 									{% else %}
 									<span><a href="{% url 'viewAuction' transaction.auction.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
 									{% endif %}								
 								</div>
 								<div class = "col-md-7 column ">
-									<h5>Item Name: {{transaction.auction.name}}(bought)</h5>
+									<h5>Item Name: {{transaction.auction.name}}</h5>
 									Price : ${{transaction.auction.current_max_bid}} <br>
 									Purchage Time: {{transaction.time}} <br>
 									Seller: {{transaction.auction.seller}}  <br>
@@ -91,12 +92,55 @@
 									{% endif %}
 								</div>
 								<div class = "col-md-7 column ">
-									<h5>Item Name: {{sale.name}}(sold)</h5>
+									<h5>Item Name: {{sale.name}} </h5>
+									Fixed Price<br>
 									Price : ${{sale.price}} <br>
 									Start Time: {{sale.start_time}} <br>
 									End Time: {{sale.end_time}} <br>
-									Quantity: {{sale.quantity}} <br>
-									Seller Link: {{sale.seller}}  <br>
+									Quantity: {{sale.quantity }}  <br>
+									Sold Num: {{sale.sold_num}} <br>
+								</div>	
+							</div>
+							{% endfor %}
+							{% for auction in auctions %}
+							<div class = "col-md-12 column">	
+								<div class = "col-md-5 column ">
+									{% if auction.item_pic %}
+									<span><a href="{% url 'viewAuction' auction.id %}"><img src="{% url 'auction_picture' auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									{% else %}
+									<span><a href="{% url 'viewAuction' auction.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+									{% endif %}
+								</div>
+								<div class = "col-md-7 column ">
+									<h5>Item Name: {{auction.name}} </h5>
+									Auction<br>
+									Start Price: ${{auction.start_price}}<br>
+									Current Max Bid: ${{auction.current_max_bid}} <br>
+									Start Time: {{auction.start_time}} <br>
+									End Time: {{auction.end_time}} <br>
+								</div>	
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="tab-pane" id = "panel-won-auctions">
+						<div class = "col-md-10 column well well-lg">
+							{% for won_auction in won_auctions %}
+							<div class = "col-md-12 column">	
+								<div class = "col-md-5 column ">
+									{% if won_auction.item_pic %}
+									<span><a href="{% url 'viewAuction' won_auction.id %}"><img src="{% url 'auction_picture' won_auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
+									{% else %}
+									<span><a href="{% url 'viewAuction' won_auction.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+									{% endif %}
+								</div>
+								<div class = "col-md-7 column ">
+									<h5>Item Name: {{won_auction.name}}</h5>
+									Max Bid      : ${{won_auction.current_max_bid}} <br>
+									Start Time   : {{won_auction.start_time}} <br>
+									End Time     : {{won_auction.end_time}} <br>
+									Has Paid?    : {{won_auction.is_paid}}<br>
+									Seller Info  : {{won_auction.seller}}  <br>
 									<button type="button" class="btn btn-primary"> Contact Seller </button>
 								</div>	
 							</div>

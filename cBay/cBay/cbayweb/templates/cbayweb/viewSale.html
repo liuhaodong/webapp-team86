@@ -18,16 +18,21 @@
 		<h2>
 			Item Name: {{sale.name}}
 		</h2> 
+		
 		<a href='#'><p>Item Seller: {{sale.seller}}</p></a>
 		<p>Price: ${{sale.price}}</p> 	
 		<p>Num In Stock: {{sale.quantity}}</p>
 		<br><br><br><br>
+		{% if sale.quantity == 0 %}
+		<div class='alert alert-danger' role='alert' id="auction_ended_alert" ><p>This Sale is out of stock!</p></div>
+		{% else %}
 		<form method="post" action="{% url 'placeOrder' %}">
 			{% csrf_token %} 
 			<input type="hidden" name="sale_id"  value={{sale.id}} >
 			Quantity: <input type="number" name="sale_quantity" min="1">
 			<button type="submit" class="btn btn-primary">Buy</button>
 		</form>
+		{% endif %}
 	</div>
 	
 </div><br><br>
@@ -63,9 +68,9 @@
 		</h2>
 		{% for comment in comments%}
 		<div class="col-md-12 column well well-lg">
-		<h1>{{comment.title}}</h1>
-		<p>User: {{comment.buyer}} | Rating: {{comment.rating}} | Date: {{comment.time_stamp}}</p>
-		<pre>{{comment.content}}</pre>
+			<h1>{{comment.title}}</h1>
+			<p>User: {{comment.buyer}} | Rating: {{comment.rating}} | Date: {{comment.time_stamp}}</p>
+			<pre>{{comment.content}}</pre>
 		</div>
 		{% endfor %}
 	</div>
