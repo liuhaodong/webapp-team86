@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 # User class for built-in authentication module
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -98,5 +99,17 @@ class Transaction(models.Model):
 	time = models.DateTimeField(default=datetime.now)
 	price = models.FloatField(default=0)
 	quantity = models.IntegerField(default=1)
+	def __unicode__(self):
+		return self.id
+
+class Comment(models.Model):
+	seller = models.ForeignKey(User, related_name='%(class)s_seller')
+	buyer = models.ForeignKey(User, related_name='%(class)s_buyer')
+	sale = models.ForeignKey(Sale, null=True)
+	auction = models.ForeignKey(Auction, null=True)
+	title = models.CharField(max_length = 256)
+	content = models.CharField(max_length = 2048)
+	rating = models.IntegerField(default = 1,validators=[MinValueValidator(0), MaxValueValidator(10)])
+	time_stamp = models.DateTimeField(default=datetime.now)
 	def __unicode__(self):
 		return self.id

@@ -91,12 +91,13 @@
 		<h2>
 			Comments
 		</h2>
-		<p>
-			
-		</p>
-		<p>
-			<a class="btn" href="#">View details »</a>
-		</p>
+		{% for comment in comments%}
+		<div class="col-md-12 column well well-lg">
+		<h1>{{comment.title}}</h1>
+		<p>User: {{comment.buyer}} | Rating: {{comment.rating}}</p>
+		<pre>{{comment.content}}</pre>
+		</div>
+		{% endfor %}
 	</div>
 </div>
 {% endblock %}

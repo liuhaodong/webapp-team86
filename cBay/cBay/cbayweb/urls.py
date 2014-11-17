@@ -23,4 +23,5 @@ urlpatterns = patterns('',
     url(r'^searchItem$','cbayweb.views.searchItem', name='searchItem'),
     url(r'^editProfile$','cbayweb.views.editProfile', name='editProfile'),
     url(r'^id_picture/(?P<id>\d+)$', 'cbayweb.views.id_picture', name='id_picture'),
+    url(r'^addComment$', 'cbayweb.views.addComment', name='addComment'),
 )

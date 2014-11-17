@@ -50,6 +50,11 @@
 									Purchage Time: {{transaction.time}} <br>
 									Seller: {{transaction.sale.seller}}  <br>
 									<button type="button" class="btn btn-primary"> Contact Seller </button>
+
+									<form action="{% url 'addComment' %}" method="get" accept-charset="utf-8">
+										<input type="hidden" name="sale_id" value="{{transaction.sale.id}}">
+										<button type="submit" class="btn btn-primary"> Comment </button>
+									</form>
 								</div>	
 							</div>
 							{% else %}

@@ -34,7 +34,7 @@ def viewSale(request, sale_id):
 	sale = get_object_or_404(Sale, id=sale_id)
 	context = {}
 	context['sale'] = sale 
-	comments = []
+	comments = Comment.objects.filter(sale = sale)
 	context['comments'] = comments
 	return render(request, 'cbayweb/viewSale.html',context)
 
@@ -50,7 +50,7 @@ def viewAuction(request, auction_id):
 		max_bid_price = bids[0].bid_price
 	context['max_bid_price'] = max_bid_price
 	context['bids'] = bids
-	comments = []
+	comments = Comment.objects.filter(auction = auction)
 	context['comments'] = comments
 	return render(request, 'cbayweb/viewAuction.html',context)
 
@@ -110,6 +110,42 @@ def placeOrder(request):
 		return render(request, 'cbayweb/reviewOrder.html',context)
 	else:
 		return redirect('/')
+
+@login_required
+def addComment(request):
+	if request.method == 'POST':
+		if 'sale_id' in request.POST:
+			sale = get_object_or_404(Sale, id= request.POST['sale_id'])
+			comment = Comment(buyer = get_object_or_404(User, id = request.user.id), seller = sale.seller, sale = sale)
+			form = CommentModelForm(request.POST, instance=comment)
+			if form.is_valid():
+				new_comment = form.save()
+				print('New Comment Saved')
+				return redirect('viewSale', request.POST['sale_id'])
+		elif 'auction_id' in request.POST:
+			auction = get_object_or_404(Auction, id = request.POST['auction_id'])
+			comment = Comment(buyer = get_object_or_404(User, id = request.user.id), seller = auction.seller, auction = auction)
+			form = CommentModelForm(request.POST, instance=comment)
+			if form.is_valid():
+				new_comment = form.save()
+				return redirect('viewAuction', request.POST['auction_id'])
+		else:
+			return redirect('/')
+
+
+	else:
+		sale_id = request.GET.get('sale_id', False)
+		auction_id = request.GET.get('auction_id', False)
+		form = CommentModelForm()
+		if sale_id != '':
+			sale = get_object_or_404(Sale, id = sale_id)
+			return render(request, 'cbayweb/addComment.html', {'sale': sale, 'form':form})
+		elif auction_id != '':
+			auction = get_object_or_404(Auction, id= auction_id)
+			return render(request, 'cbayweb/addComment.html', {'auction': auction, 'form':form})
+		else:
+			return redirect('/')
+								
 
 @login_required
 def placeBid(request):

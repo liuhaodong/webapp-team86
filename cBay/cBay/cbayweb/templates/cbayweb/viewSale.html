@@ -61,6 +61,13 @@
 		<h2>
 			Comments
 		</h2>
+		{% for comment in comments%}
+		<div class="col-md-12 column well well-lg">
+		<h1>{{comment.title}}</h1>
+		<p>User: {{comment.buyer}} | Rating: {{comment.rating}} | Date: {{comment.time_stamp}}</p>
+		<pre>{{comment.content}}</pre>
+		</div>
+		{% endfor %}
 	</div>
 </div>
 {% endblock %}
