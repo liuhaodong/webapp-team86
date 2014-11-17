@@ -11,7 +11,6 @@ class Command(BaseCommand):
         for auction in tmp_auctions:
             winning_bids = Bid.objects.filter(bid_price = auction.current_max_bid, auction=auction)
             if winning_bids.count() == 0:
-                self.stdout.write("hahahahah", ending='')
                 auction.is_ended = True
                 auction.save()
             else:

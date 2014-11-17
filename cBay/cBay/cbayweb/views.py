@@ -126,6 +126,7 @@ def addComment(request):
 				print('New Comment Saved')
 				return redirect('viewSale', request.POST['sale_id'])
 		elif 'auction_id' in request.POST:
+			print(request.POST['auction_id'])
 			auction = get_object_or_404(Auction, id = request.POST['auction_id'])
 			comment = Comment(buyer = get_object_or_404(User, id = request.user.id), seller = auction.seller, auction = auction)
 			form = CommentModelForm(request.POST, instance=comment)
@@ -139,11 +140,13 @@ def addComment(request):
 	else:
 		sale_id = request.GET.get('sale_id', False)
 		auction_id = request.GET.get('auction_id', False)
+		print(auction_id)
 		form = CommentModelForm()
-		if sale_id != '':
+		if sale_id:
 			sale = get_object_or_404(Sale, id = sale_id)
 			return render(request, 'cbayweb/addComment.html', {'sale': sale, 'form':form})
-		elif auction_id != '':
+		elif auction_id:
+			print(auction_id)
 			auction = get_object_or_404(Auction, id= auction_id)
 			return render(request, 'cbayweb/addComment.html', {'auction': auction, 'form':form})
 		else:
