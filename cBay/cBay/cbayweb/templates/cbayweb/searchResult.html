@@ -1,44 +1,26 @@
 {% extends "cbayweb/base.html" %}
 
-{% block title %}cBay Homepage{% endblock %}
+{% block title %}cBay Result{% endblock %}
 
 {% block content %}
 
-<script src="/static/js/cbayweb/update_category.js" type="text/javascript" charset="utf-8" async defer></script>
 <div class="row clearfix">
 	<div class="col-md-12 column well well-lg">
 		<div>
-			<h4>Recommandations</h4>
-		</div>
-		<div class="DocumentListHorizontal">
-			<ul class="list-inline">
-				{% for sale in sales %}
-				<li class="DocumentItem">
-					{% if sale.item_pic %}
-					<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
-					{% else %}
-					<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
-					{% endif %}
-					<p>{{sale.name}}</p>
-				</li>
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
-</div>
-
-
-<div class="row clearfix">
-	<div class="col-md-12 column well well-lg">
-		<div>
-			<h4> Best Selling Items</h4>
+			<h4> Result for: {{keyword}}</h4>
 		</div>
 		<div class="col-md-3 column">
-			<select class="selectpicker" id="categorypicker">
+		<form method='get' action="{% url 'searchItem' %}">
+			<select class="selectpicker" name="category">
 				{% for category in categories %}
 				<option>{{category}}</option>
 				{% endfor %}
 			</select>
+			<input type="hidden" name="keyword" value="{{keyword}}">
+			<br>
+			<br>
+			<button class="btn btn-primary" type="submit">Filter Result</button>
+			</form>
 		</div>
 		<div class="col-md-9 column" >
 			<div class="col-md-12 column">
@@ -100,38 +82,4 @@
 	</div>
 </div>
 
-
-<div class="row clearfix">
-	<div class="col-md-12 column well well-lg">
-		<div>
-			<h4> Following</h4>
-		</div>
-		<div class="DocumentListHorizontal">
-			<ul class="list-inline">
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-			</ul>
-		</div>					
-	</div>
-</div>
 {% endblock %}
-

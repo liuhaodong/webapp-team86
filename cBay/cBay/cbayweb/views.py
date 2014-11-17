@@ -14,6 +14,7 @@ from django.core import serializers
 from forms import *
 from mimetypes import guess_type
 from django.utils import timezone
+from django.db.models import Q
 import json
 import json as simplejson
 
@@ -240,3 +241,29 @@ def get_items_by_category(request, category):
 	auctions_data = serializers.serialize('json', Auction.objects.filter(category = category), fields=('name','id','seller','current_max_bid','start_time', 'end_time'))
 	data = {'sales_data':  sales_data, 'auctions_data': auctions_data}
 	return HttpResponse(json.dumps(data), content_type = "application/json")
+
+@login_required
+def searchItem(request):
+
+	keyword = request.GET.get('keyword', False)
+	category = request.GET.get('category', False)
+	print(keyword)
+	print(category)
+	categories = []
+	for item in CATEGORY_CHOICES:
+		categories.append(item[0])
+
+	if keyword =='':
+		sales = Sale.objects.all()
+		auctions = Auction.objects.all()
+		return render(request, 'cbayweb/searchResult.html',{'sales': sales,'categories':categories,'auctions': auctions, 'keyword':keyword })
+	elif category == '':
+		print('category is none')
+		sales = Sale.objects.filter( Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword))
+		auctions = Auction.objects.filter(Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword))
+		print(sales)
+		return render(request, 'cbayweb/searchResult.html',{'sales': sales,'categories':categories,'auctions': auctions, 'keyword':keyword })
+	else:
+		sales = Sale.objects.filter( Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword) , category = category)
+		auctions = Auction.objects.filter(Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword) , category = category)
+		return render(request, 'cbayweb/searchResult.html',{'sales': sales,'categories':categories,'auctions': auctions, 'keyword': keyword})

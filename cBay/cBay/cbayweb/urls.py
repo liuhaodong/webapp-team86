@@ -20,4 +20,6 @@ urlpatterns = patterns('',
     url(r'^check_auction/(?P<auction_id>\d+)$', 'cbayweb.views.check_auction', name='check_auction'),
     url(r'^buyAuction', 'cbayweb.views.buy_auction', name='buyAuction'),
     url(r'^get_items_by_category/(?P<category>\w+)$','cbayweb.views.get_items_by_category', name='get_items_by_category'),
+    url(r'^searchItem$','cbayweb.views.searchItem', name='searchItem'),
+    url(r'^editProfile$','cbayweb.views.editProfile', name='editProfile'),
 )

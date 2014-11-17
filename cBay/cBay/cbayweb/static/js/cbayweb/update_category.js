@@ -1,6 +1,8 @@
 $(document).ready(function(){
+	console.log('ready');
 	$('#categorypicker').change(function() {
     //alert($("#categorypicker option:selected").text());
+    console.log('category changed');
     var category = $("#categorypicker option:selected").text();
     var $item_by_category = $('#items_by_category');
     var $panel_sale = $('#panel-fixed-price');
@@ -35,12 +37,12 @@ $(document).ready(function(){
     	var output = "";
     	$.each( sales_jsonObj, function(i, item) {
     		output = Mustache.render(saleTemplate, item);
-    		$(output).appendTo($panel_sale);
+    		$(output).hide().appendTo($panel_sale).slideDown(300);
     	});
 
     	$.each( auctions_jsonObj, function(i, item) {
     		output = Mustache.render(auctionTemplate, item);
-    		$(output).appendTo($panel_auction);
+    		$(output).hide().appendTo($panel_auction).slideDown(300);
     	});
 
     })

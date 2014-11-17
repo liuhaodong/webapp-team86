@@ -102,14 +102,24 @@
 							<h1 class='muted' >cBay</h1>
 						</div>
 						<div class="col-md-9 column">
-							<form class="navbar-form">
+			
 								<div class="form-group" style="display:inline;">
 									<div class="input-group" >
-										<input type="text" class="form-control">
-										<span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+										<form class="navbar-form navbar-right" role="search" method="get" action="{% url 'searchItem' %}">
+											<div class="form-group">
+												<input type="text" class="form-control" name='keyword'>
+												<select class="selectpicker" name='category'>
+													<option>GENERAL</option>
+													<option>OTHERS</option>
+													<option>ELECTRONIC</option>
+												</select>
+												<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+											</div> 
+										</form>
+										
 									</div>
 								</div>
-							</form>					
+			
 						</div>
 					</div>	
 				</div>
