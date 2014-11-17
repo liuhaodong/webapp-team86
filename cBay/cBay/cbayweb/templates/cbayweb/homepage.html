@@ -55,7 +55,7 @@
 						<div class="tab-pane" id="panel-fixed-price">
 							{% for sale in sales %}
 							<div class="col-md-12 column well well-lg" >
-								<div class="col-md-8 column">
+								<div class="col-md-6 column">
 									{% if sale.item_pic %}
 									<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
 									{% else %}
@@ -63,10 +63,11 @@
 									{% endif %}
 									<p>Seller: {{sale.seller.username}}</p>
 								</div>
-								<div class="col-md-4 column">
+								<div class="col-md-6 column">
 									<h1>Name: {{sale.name}}</h1>
 									<h2>Price: {{sale.price}}</h2>
-									<h3>Category: {{sale.category}}</h3>
+									<p>Start Time: {{sale.start_time}}</p>
+									<p>End Time: {{sale.end_time}}</p>
 								</div>
 							</div>
 							{% endfor %}
@@ -74,7 +75,7 @@
 						<div class="tab-pane" id="panel-auction">
 							{% for auction in auctions %}
 							<div class="col-md-12 column well well-lg" >
-								<div class="col-md-8 column">
+								<div class="col-md-6 column">
 									{% if auction.item_pic %}
 									<span><a href="{% url 'viewAuction' auction.id %}"><img src="{% url 'auction_picture' auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
 									{% else %}
@@ -82,10 +83,11 @@
 									{% endif %}
 									<p>Seller: {{auction.seller.username}}</p>
 								</div>
-								<div class="col-md-4 column">
+								<div class="col-md-6 column">
 									<h1>Name: {{auction.name}}</h1>
 									<h2>Current Max Bid: {{auction.current_max_bid}}</h2>
-									<h3>Category: {{auction.category}}</h3>
+									<p>Start Time: {{auction.start_time}}</p>
+									<p>End Time: {{auction.end_time}}</p>
 								</div>
 							</div>
 							{% endfor %}

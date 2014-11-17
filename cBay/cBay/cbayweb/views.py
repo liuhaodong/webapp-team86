@@ -236,6 +236,7 @@ def buy_auction(request):
 
 @login_required
 def get_items_by_category(request, category):
-	sales_data = serializers.serialize('json', Sale.objects.filter(category = category), fields=('name','id','seller','price'))
-	print(sales_data)
-	return HttpResponse(sales_data, content_type = "application/json")
+	sales_data = serializers.serialize('json', Sale.objects.filter(category = category), fields=('name','id','seller','price','start_time','end_time'))
+	auctions_data = serializers.serialize('json', Auction.objects.filter(category = category), fields=('name','id','seller','current_max_bid','start_time', 'end_time'))
+	data = {'sales_data':  sales_data, 'auctions_data': auctions_data}
+	return HttpResponse(json.dumps(data), content_type = "application/json")
