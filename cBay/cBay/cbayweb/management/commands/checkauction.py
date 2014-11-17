@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Closes the specified poll for voting'
 
     def handle(self, *args, **options):
-        print(datetime.now())
+        print('checking unhandled auctions')
         tmp_auctions = Auction.objects.filter(end_time__lte=datetime.now(), is_ended = False)
         for auction in tmp_auctions:
             winning_bids = Bid.objects.filter(bid_price = auction.current_max_bid, auction=auction)

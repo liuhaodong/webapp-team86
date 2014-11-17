@@ -32,7 +32,7 @@
 				<!--pills-panel-content-->
 				<div class = "tab-content col-md-9 column">
 					<div class="tab-pane active" id = "panel-buy">
-						<div class = " well well-lg">
+						<div class = "col-md-12 column well well-lg">
 							{% for transaction in transactions %}
 							{% if transaction.sale %}
 							<div class = "col-md-12 column">
@@ -81,7 +81,7 @@
 					</div>
 
 					<div class="tab-pane" id = "panel-sell">
-						<div class = "col-md-10 column well well-lg">
+						<div class = "col-md-12 column well well-lg">
 							{% for sale in sales %}
 							<div class = "col-md-12 column">	
 								<div class = "col-md-5 column ">
@@ -124,7 +124,7 @@
 						</div>
 					</div>
 					<div class="tab-pane" id = "panel-won-auctions">
-						<div class = "col-md-10 column well well-lg">
+						<div class = "col-md-12 column well well-lg">
 							{% for won_auction in won_auctions %}
 							<div class = "col-md-12 column">	
 								<div class = "col-md-5 column ">
