@@ -99,6 +99,7 @@ class Transaction(models.Model):
 	time = models.DateTimeField(default=datetime.now)
 	price = models.FloatField(default=0)
 	quantity = models.IntegerField(default=1)
+	is_finished = models.NullBooleanField(default=False)
 	def __unicode__(self):
 		return self.id
 

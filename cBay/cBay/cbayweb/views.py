@@ -178,11 +178,9 @@ def payOrder(request):
 			new_transaction = Transaction(sale=sale, quantity=order.quantity, price = order.price, seller = sale.seller, buyer=request.user)
 			buyer_profile.account_balance = buyer_profile.account_balance - order.price
 			buyer_profile.save()
-			print(buyer_profile.account_balance)
-			seller_profile.account_balance = seller_profile.account_balance + order.price
-			seller_profile.save()
-			print(seller_profile.account_balance)
+			new_transaction.is_finshied = False
 			sale.quantity = sale.quantity - order.quantity
+			sale.sold_num = sale.sold_num + order.quantity
 			sale.save()
 			new_transaction.save()		
 			order.delete()
@@ -193,14 +191,28 @@ def payOrder(request):
 			new_transaction = Transaction(auction=auction, quantity=order.quantity, price = order.price, seller = auction.seller, buyer=request.user)
 			buyer_profile.account_balance = buyer_profile.account_balance - order.price
 			buyer_profile.save()
-			seller_profile.account_balance = seller_profile.account_balance + order.price
-			seller_profile.save()
+			new_transaction.is_finshied = False
 			auction.is_paid = True
 			auction.save()
 			new_transaction.save()		
 			order.delete()
-			print('payment success')
 		return redirect('/')
+	else:
+		return redirect('/')
+
+@login_required
+def confirmDelivery(request):
+	if request.method == 'POST':
+		if 'transaction_id' in request.POST:
+			unfinished_transaction = get_object_or_404(Transaction, id = request.POST['transaction_id'], buyer = request.user)
+			seller_profile = get_object_or_404(Profile, user = unfinished_transaction.seller)
+			seller_profile.account_balance = seller_profile.account_balance + unfinished_transaction.price
+			seller_profile.save()
+			unfinished_transaction.is_finished = True
+			unfinished_transaction.save()
+			return redirect('accountManage')
+		else:
+			return redirect('accountManage')
 	else:
 		return redirect('/')
 
