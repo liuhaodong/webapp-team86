@@ -31,7 +31,13 @@
 			<input type="hidden" name="sale_id"  value={{sale.id}} >
 			Quantity: <input type="number" name="sale_quantity" min="1">
 			<button type="submit" class="btn btn-primary">Buy</button>
+			<a id="addToCartLink" href="/addToShoppingCart?sale_id={{sale.id}}"><button type="button" class='btn btn-primary'>Add To Cart</button></a>
 		</form>
+		<script async defer>
+			$('input[name="sale_quantity"]').change(function(){
+				$('#addToCartLink').attr('href', $('#addToCartLink').attr('href')+'&'+"quantity="+$('input[name="sale_quantity"]').val());
+			});
+		</script>
 		{% endif %}
 	</div>
 	

@@ -27,4 +27,8 @@ urlpatterns = patterns('',
     url(r'^confirmDelivery$', 'cbayweb.views.confirmDelivery', name = 'confirmDelivery'),
     url(r'^sendMessage$', 'cbayweb.views.sendMessage', name = 'sendMessage'),
     url(r'^viewMessage$', 'cbayweb.views.viewMessage', name='viewMessage'),
+    url(r'^addToShoppingCart$','cbayweb.views.addToShoppingCart', name='addToShoppingCart'),
+    url(r'^viewShoppingCart$','cbayweb.views.viewShoppingCart', name='viewShoppingCart'),
+    url(r'^deleteOrder$','cbayweb.views.deleteOrder', name='deleteOrder'),
+    url(r'^checkOutShoppingCart$','cbayweb.views.checkOutShoppingCart', name='checkOutShoppingCart'),
 )

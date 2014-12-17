@@ -65,6 +65,8 @@ def register(request):
 			)
 			new_profile = Profile(user = user)
 			new_profile.save()
+			new_shoppingCart = ShoppingCart(owner = user)
+			new_shoppingCart.save()
 			user = authenticate(username=form.cleaned_data['username'],password=form.cleaned_data['password'])
 			login(request, user)
 			return redirect('/')
@@ -391,7 +393,91 @@ def viewMessage(request):
 		message = get_object_or_404(Message, id = message_id)
 		return render(request, 'cbayweb/viewMessage.html', {'message': message})
 	else:
-		raise 404
+		raise Http404
 
+@login_required
+def addToShoppingCart(request):
+	sale_id = request.GET.get('sale_id', False)
+	auction_id = request.GET.get('auction_id', False)
+	shoppingCart = get_object_or_404(ShoppingCart, owner = request.user)
+	if sale_id:
+		sale=get_object_or_404(Sale, id=sale_id)
+		print sale.name
+		new_order = Order(buyer = request.user, sale=sale, quantity = request.GET.get('quantity'))
+		buyer_profile = get_object_or_404(Profile, user = request.user)
+		new_order.shipping_address = buyer_profile.address
+		new_order.price = (float)(new_order.sale.price) * (float)(new_order.quantity)
+		new_order.save()
+		shoppingCart.orders.add(new_order)
+		shoppingCart.save()
+		print('shopping cart saved')
+		return redirect('viewShoppingCart')
+	elif auction_id:
+		auction = get_object_or_404(Auction, id = auction_id)
+		if request.user == auction.winner:
+			new_order = Order(buyer = request.user, auction=auction, quantity = 1)
+			buyer_profile = get_object_or_404(Profile, user = request.user)
+			new_order.shipping_address = buyer_profile.address
+			new_order.price = auction.current_max_bid;
+			new_order.save()
+			shoppingCart.orders.add(new_order)
+			shoppingCart.save()
+			return redirect('viewShoppingCart')
+		else:
+			return redirect('/')
+	else:
+		raise Http404	
+		
+@login_required
+def viewShoppingCart(request):
+	shoppingCart = get_object_or_404(ShoppingCart, owner = request.user)
+	orders = shoppingCart.orders.all()
+	total_price = 0
+	for order in orders:
+		total_price = total_price + order.price
+	return render(request, 'cbayweb/viewShoppingCart.html',{'shoppingCart': shoppingCart, 'orders':orders, 'total_price': total_price})
+
+
+@login_required
+def deleteOrder(request):
+	order_id = request.GET.get('order_id')
+	if order_id:
+		order = get_object_or_404(Order, id=order_id)
+		order.delete()
+		return redirect('viewShoppingCart')
+	else:
+		raise Http404
+
+@login_required
+def checkOutShoppingCart(request):
+	shoppingCart = get_object_or_404(ShoppingCart, owner = request.user)
+	orders = shoppingCart.orders.all()
+	for order in orders:
+		buyer_profile = get_object_or_404(Profile, user = order.buyer)
+		if order.sale:
+			seller_profile = get_object_or_404(Profile, user = order.sale.seller)
+			sale = order.sale
+			new_transaction = Transaction(sale=sale, quantity=order.quantity, price = order.price, seller = sale.seller, buyer=request.user)
+			buyer_profile.account_balance = buyer_profile.account_balance - order.price
+			buyer_profile.save()
+			new_transaction.is_finshied = False
+			sale.quantity = sale.quantity - order.quantity
+			sale.sold_num = sale.sold_num + order.quantity
+			sale.save()
+			new_transaction.save()		
+			order.delete()
+			print('payment success')
+		else:
+			seller_profile = get_object_or_404(Profile, user = order.auction.seller)
+			auction = order.auction
+			new_transaction = Transaction(auction=auction, quantity=order.quantity, price = order.price, seller = auction.seller, buyer=request.user)
+			buyer_profile.account_balance = buyer_profile.account_balance - order.price
+			buyer_profile.save()
+			new_transaction.is_finshied = False
+			auction.is_paid = True
+			auction.save()
+			new_transaction.save()		
+			order.delete()
+	return redirect('accountManage')
 
 

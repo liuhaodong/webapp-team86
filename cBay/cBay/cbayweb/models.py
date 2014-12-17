@@ -125,3 +125,10 @@ class Message(models.Model):
 	have_read = models.NullBooleanField(default = False)
 	def __unicode__(self):
 		return self.id
+
+
+class ShoppingCart(models.Model):
+	owner = models.OneToOneField(User)
+	orders = models.ManyToManyField(Order)
+	def __unicode__(self):
+		return self.id

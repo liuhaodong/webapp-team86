@@ -1,0 +1,47 @@
+{% extends 'cbayweb/base.html' %}
+{% block titile %} cBay View Shopping Cart {% endblock %}
+{% block content%}
+<h1>This page is for shopping cart</h1>
+{% for order in orders%}
+{% if order.sale%}
+
+<div class="col-md-12 column well well-lg" >
+	<div class="col-md-6 column">
+		{% if order.sale.item_pic %}
+		<span><a href="{% url 'viewSale' order.sale.id %}"><img src="{% url 'item_picture' order.sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
+		{% else %}
+		<span><a href="{% url 'viewSale' order.sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+		{% endif %}
+		
+	</div>
+	<div class="col-md-6 column">
+		<h3>Name: {{order.sale.name}}</h3>
+		<p class='lead'>Seller: {{order.sale.seller.username}}</p>
+		<h4 class='lead'>Price: {{order.sale.price}}</h4>
+		<h4 class='lead'>Quantity: {{order.quantity}} </h4>
+		<a href="deleteOrder?order_id={{order.id}}"><button type="button" class='btn btn-primary pull-right'>Delete Order</button></a> 
+	</div>
+</div>
+
+{% else %}
+<div class="col-md-12 column well well-lg" >
+	<div class="col-md-6 column">
+	{% if order.auction.item_pic %}
+		<span><a href="{% url 'viewAuction' order.auction.id %}"><img src="{% url 'auction_picture' order.auction.id %}" style="height:280px" class="img-thumbnail"></a></span>
+		{% else %}
+		<span><a href="{% url 'viewAuction' order.auction.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+		{% endif %}
+		
+	</div>
+	<div class="col-md-6 column">
+		<h1 class='lead'>Name: {{order.auction.name}}</h1>
+		<p class='lead'>Seller: {{order.auction.seller.username}}</p>
+		<h2 class='lead'>Price: {{order.auction.current_max_bid}}</h2>
+		<a href="deleteOrder?order_id={{order.id}}"><button type="button" class='btn btn-primary'>Delete Order</button></a>
+	</div>
+</div>
+{% endif %}
+{% endfor %}
+<p class='lead'>Total: {{total_price}}</p>
+<a href="checkOutShoppingCart"><button type="button" class='btn btn-primary pull-right'>Check Out!</button></a> 
+{% endblock %}
