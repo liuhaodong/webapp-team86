@@ -260,12 +260,14 @@ def accountManage(request):
 	auctions = Auction.objects.filter(seller = request.user)
 	sales = Sale.objects.filter(seller = request.user)
 	won_auctions = Auction.objects.filter(winner = request.user)
+	messages = Message.objects.filter(recipient = request.user)
 	context['user'] = current_user
 	context['profile'] = user_profile
 	context['transactions'] = transactions 
 	context['sales'] = sales
 	context['auctions'] = auctions
 	context['won_auctions'] = won_auctions
+	context['messages'] = messages
 	return render(request, 'cbayweb/accountManage.html',context)
 
 @login_required
@@ -353,3 +355,43 @@ def searchItem(request):
 		sales = Sale.objects.filter( Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword) , category = category)
 		auctions = Auction.objects.filter(Q(name__icontains= keyword) | Q(description__icontains=keyword) | Q(seller__username__icontains = keyword) , category = category)
 		return render(request, 'cbayweb/searchResult.html',{'sales': sales,'categories':categories,'auctions': auctions, 'keyword': keyword})
+
+
+@login_required
+def sendMessage(request):
+	if request.method == 'POST':
+		if 'recipient_id' in request.POST:
+			recipient = get_object_or_404(User, id= request.POST['recipient_id'])
+		elif 'recipient_name' in request.POST:
+			recipient = get_object_or_404(User, username = request.POST['recipient_name'])
+		else:
+			return redirect('/')
+		message = Message(sender = get_object_or_404(User, id = request.user.id), recipient = recipient, subject = request.POST['subject'], content = request.POST['content'])
+		form = MessageModelForm(request.POST, instance=message)
+		if form.is_valid():
+			new_message = form.save()
+			print('New Message Saved')
+			print new_message.subject
+			print new_message.content
+			return redirect('/')
+	else:
+		recipient_id = request.GET.get('recipient_id', False)
+		form = MessageModelForm()
+		if recipient_id:
+			recipient = get_object_or_404(User, id = recipient_id)
+			return render(request, 'cbayweb/sendMessage.html', {'recipient': recipient, 'form':form})
+		else:
+			return render(request, 'cbayweb/sendMessage.html', {'recipient': '', 'form':form})
+
+
+@login_required
+def viewMessage(request):
+	message_id = request.GET.get('message_id', False)
+	if message_id:
+		message = get_object_or_404(Message, id = message_id)
+		return render(request, 'cbayweb/viewMessage.html', {'message': message})
+	else:
+		raise 404
+
+
+

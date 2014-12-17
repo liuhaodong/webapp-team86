@@ -114,3 +114,14 @@ class Comment(models.Model):
 	time_stamp = models.DateTimeField(default=datetime.now)
 	def __unicode__(self):
 		return self.id
+
+
+class Message(models.Model):
+	sender = models.ForeignKey(User, related_name = '%(class)s_sender')
+	recipient = models.ForeignKey(User, related_name = '%(class)s_recipient')
+	subject = models.CharField(max_length = 256)
+	content = models.CharField(max_length = 2048)
+	time_stamp = models.DateTimeField(default = datetime.now)
+	have_read = models.NullBooleanField(default = False)
+	def __unicode__(self):
+		return self.id

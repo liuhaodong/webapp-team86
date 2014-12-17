@@ -1,0 +1,9 @@
+{% extends 'cbayweb/base.html' %}
+{% block titile %} cBay View Message {% endblock %}
+{% block content%}
+<div class="well well-lg row clearfix col-md-12 column">
+	<h2 class="media-heading">Subject: {{message.subject}}</h2>
+	<p>From: {{message.sender.username}}</p>
+	<pre class="media-body">{{message.content}}</pre>
+</div>
+{% endblock %}

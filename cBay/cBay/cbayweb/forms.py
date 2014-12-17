@@ -62,3 +62,17 @@ class CommentModelForm(forms.ModelForm):
 		title = cleaned_data.get("title")
 		if title == '':
 			self.add_error(title, 'Comment Title Must Not Be Empty')
+
+
+class MessageModelForm(forms.ModelForm):
+	subject = forms.CharField(max_length=256, widget=forms.TextInput(attrs={'class': 'form-control'}))
+	content = forms.CharField(max_length=2048, widget=forms.Textarea(attrs={'class':'form-control'}))
+	class Meta:
+		model = Message
+		fields = ('subject','content')
+	def clean(self):
+		cleaned_data = super(MessageModelForm, self).clean()
+		subject = cleaned_data.get("subject")
+		if subject == '':
+			self.add_error(subject, 'Subject Must Not Be Empty')
+

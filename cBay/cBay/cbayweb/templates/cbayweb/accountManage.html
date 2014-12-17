@@ -174,7 +174,13 @@
 		</div>
 
 		<div class="tab-pane" id="panel-message">
-			implement later...
+			<ul>
+				<pre>From:			Subject:			Date:</pre>
+				{% for message in messages %}
+				<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.sender}}		{{message.subject}}			{{message.time_stamp}}</pre></a> </li>
+				{% endfor %}
+			</ul>
+			
 		</div>
 		<div class="tab-pane" id="panel-account">
 			<div class = "col-md-5 column ">
