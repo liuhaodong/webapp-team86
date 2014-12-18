@@ -8,8 +8,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 CATEGORY_CHOICES = {
 	('ELECTRONIC','Electronic'),
+	('BOOKS', 'Books'),
+	('MOVIES','Movies'),
+	('GAMES','Games'),
+	('CLOTHING','Clothing'),
+	('TOYS','Toys'),
 	('OTHERS','Others'),
-	('GENERAL','General'),
 }
 
 class Sale(models.Model):

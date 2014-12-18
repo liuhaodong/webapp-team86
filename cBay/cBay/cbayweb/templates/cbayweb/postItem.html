@@ -32,7 +32,6 @@
 					<div> 
 						List as:
 						<select class="selectpicker">
-							<option>Auction</option>
 							<option>Fixed Price</option>
 						</select>
 					</div>
@@ -44,12 +43,6 @@
 					<p>{{ form.price.errors.as_text }}</p>
 					Quantity: {{form.quantity}}
 					<div>
-						List duration: 
-						<select class="selectpicker">
-							<option>7 days</option>
-							<option>14 days</option>
-							<option>21 days</option>
-						</select>
 						<p>{{ form.start_time.errors.as_text }}</p>
 						StartTime: {{form.start_time}}
 						<p>{{ form.end_time.errors.as_text }}</p>

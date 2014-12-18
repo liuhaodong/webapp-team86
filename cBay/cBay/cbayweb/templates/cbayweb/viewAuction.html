@@ -23,7 +23,7 @@
 			<h3>
 				Item Name: {{auction.name}}<br>
 			</h3> 
-			<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
+			<a href="{% url 'viewProfile' auction.seller.id %}"><p>Item Seller: {{auction.seller}}</p></a>
 			<p>Start Time: {{auction.start_time}}</p>
 			<p>End Time: {{auction.end_time}}</p>
 			<p>Current Bid: ${{max_bid_price}}</p> 	

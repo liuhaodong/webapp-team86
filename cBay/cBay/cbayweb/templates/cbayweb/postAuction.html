@@ -41,12 +41,6 @@
 					
 					<p>Category: {{ form.category }}</p>
 					<div>
-						List duration: 
-						<select class="selectpicker">
-							<option>7 days</option>
-							<option>14 days</option>
-							<option>21 days</option>
-						</select>
 						<p>{{ form.start_time.errors.as_text }}</p>
 						StartTime: {{form.start_time}}
 						<p>{{ form.end_time.errors.as_text }}</p>
