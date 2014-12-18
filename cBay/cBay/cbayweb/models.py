@@ -50,6 +50,7 @@ class Profile(models.Model):
 	rating = models.FloatField(default = 1)
 	account_balance = models.FloatField(default = 5000)
 	self_description = models.CharField(max_length = 256, blank=True)
+	followings = models.ManyToManyField(User,related_name='%(class)s_followings')
 	def __unicode__(self):
 		return self.id
 
@@ -123,6 +124,7 @@ class Message(models.Model):
 	content = models.CharField(max_length = 2048)
 	time_stamp = models.DateTimeField(default = datetime.now)
 	have_read = models.NullBooleanField(default = False)
+	message_pic = models.ImageField(upload_to="message_pictures", blank=True)
 	def __unicode__(self):
 		return self.id
 

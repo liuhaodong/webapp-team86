@@ -69,7 +69,7 @@ class MessageModelForm(forms.ModelForm):
 	content = forms.CharField(max_length=2048, widget=forms.Textarea(attrs={'class':'form-control'}))
 	class Meta:
 		model = Message
-		fields = ('subject','content')
+		fields = ('subject','content','message_pic')
 	def clean(self):
 		cleaned_data = super(MessageModelForm, self).clean()
 		subject = cleaned_data.get("subject")

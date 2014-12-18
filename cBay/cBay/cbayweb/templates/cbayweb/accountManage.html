@@ -78,7 +78,7 @@
 								<div class = "col-md-7 column ">
 									<h5>Item Name: {{transaction.auction.name}}</h5>
 									Price : ${{transaction.auction.current_max_bid}} <br>
-									Purchage Time: {{transaction.time}} <br>
+									Purchase Time: {{transaction.time}} <br>
 									Seller: {{transaction.auction.seller}}  <br>
 									{% if not transaction.is_finished %}
 									
@@ -174,13 +174,38 @@
 		</div>
 
 		<div class="tab-pane" id="panel-message">
-			<ul>
-				<pre>From:			Subject:			Date:</pre>
-				{% for message in messages %}
-				<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.sender}}		{{message.subject}}			{{message.time_stamp}}</pre></a> </li>
-				{% endfor %}
-			</ul>
-			
+
+			<div class="col-md-12 column panel panel-default">
+				<br><br>
+				<div class = "col-md-3 column " id="pills-accountManag-Tabs">
+					<ul class="nav nav-pills nav-stacked well well-lg " role="tablist">  
+						<li role="presentation" class="active"><a href="#panel-inbox">Inbox</a></li>
+						<li role="presentation"><a href="#panel-sent">Sent</a></li>
+						<li role="presentation"><a href="#panel-trash">Trash</a></li>
+					</ul>
+				</div>
+				<div class = "tab-content col-md-9 column">
+					<div class="tab-pane active" id = "panel-inbox">
+						<div class = "col-md-12 column well well-lg">
+						{% for message in received_messages %}
+						<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.subject}}</pre></a> </li>
+						{% endfor %}
+						</div>
+					</div>
+					<div class="tab-pane" id = "panel-sent">
+						<div class = "col-md-12 column well well-lg">
+						{% for message in sent_messages %}
+						<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.subject}}</pre></a> </li>
+						{% endfor %}
+						</div>
+					</div>
+					<div class="tab-pane" id = "panel-trash">
+						<div class = "col-md-12 column well well-lg">
+						
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div class="tab-pane" id="panel-account">
 			<div class = "col-md-5 column ">
@@ -188,12 +213,12 @@
 
 			</div>
 			<div class = "col-md-7 column ">
-				<h2>User Name: {{user.username}}</h2>
-				<h2>User Email: {{user.email}}</h2>
-				<h2>Address: {{profile.address}}</h2>
-				<h2>Phone: {{profile.phone}}</h2>
-				<h2>Self Description: {{profile.self_description}}</h2>
-				<h2>Account Balance: ${{profile.account_balance}}</h2>
+				<p class='lead'>User Name: {{user.username}}</p>
+				<p class='lead'>User Email: {{user.email}}</p>
+				<p class='lead'>Address: {{profile.address}}</p>
+				<p class='lead'>Phone: {{profile.phone}}</p>
+				<p class='lead'>Self Description: {{profile.self_description}}</p>
+				<p class='lead'>Account Balance: ${{profile.account_balance}}</p>
 				<a href="{% url 'editProfile' %}"><button type="button" class="btn btn-primary"> Edit Profile </button></a>
 			</div>
 			

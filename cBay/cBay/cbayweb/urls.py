@@ -31,4 +31,8 @@ urlpatterns = patterns('',
     url(r'^viewShoppingCart$','cbayweb.views.viewShoppingCart', name='viewShoppingCart'),
     url(r'^deleteOrder$','cbayweb.views.deleteOrder', name='deleteOrder'),
     url(r'^checkOutShoppingCart$','cbayweb.views.checkOutShoppingCart', name='checkOutShoppingCart'),
+    url(r'^viewProfile/(?P<user_id>\d+)$', 'cbayweb.views.viewProfile', name='viewProfile'),
+    url(r'^messagePicture/(?P<message_id>\d+)$', 'cbayweb.views.messagePicture', name='messagePicture'),
+    url(r'^followUser$', 'cbayweb.views.addToFollowing', name='addToFollowing'),
+    url(r'^confirm-registration/(?P<username>[a-zA-Z0-9_@\+\-]+)/(?P<token>[a-z0-9\-]+)$', 'cbayweb.views.confirmRegistration', name='confirm'),
 )

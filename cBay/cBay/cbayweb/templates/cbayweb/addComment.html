@@ -5,14 +5,29 @@
 {% block content %}
 <form  method="post" action="{% url 'addComment' %}">
 	{% if sale %}
-	<h1>Add Comment: {{sale.name}}</h1>
+	<h1>Sale Name: {{sale.name}}</h1>
 	<input type="hidden" name="sale_id" value="{{sale.id}}">
 	{% else%}
 	<h1>Auction Name: {{auction.name}}</h1>
 	<input type="hidden" name="auction_id" value="{{auction.id}}">
 	{% endif %}
 	{% csrf_token %}
-	{{form}}
+	<div class="col-md-12 column well well-lg">
+		<div class="fieldWrapper">
+			{{ form.title.errors }}
+			<label for="title">Title:</label>
+			{{form.title }}
+		</div>
+		<div class="fieldWrapper">
+			{{ form.content.errors }}
+			<label for="content">Content:</label>
+			{{ form.content }}
+		</div>
+		<div class="fieldWrapper">
+			{{ form.rating.errors }}
+			<p >Rating(1-9): {{ form.rating }}</p>
+		</div>
+	</div>
 	<button type="submit" class="btn btn-primary">Save</button>
 </form>
 

@@ -3,7 +3,8 @@
 {% block content%}
 <div class="well well-lg row clearfix col-md-12 column">
 	<h2 class="media-heading">Subject: {{message.subject}}</h2>
-	<p>From: {{message.sender.username}}</p>
+	<p class='lead'>From: <a href="{% url 'viewProfile' message.sender.id %}">{{message.sender.username}}</a>	&nbsp &nbsp	To: <a href="{% url 'viewProfile' message.recipient.id %}">{{message.recipient.username}}</a></p>
 	<pre class="media-body">{{message.content}}</pre>
+	<img src="{% url 'messagePicture' message.id %}"  class="img-thumbnail">
 </div>
 {% endblock %}

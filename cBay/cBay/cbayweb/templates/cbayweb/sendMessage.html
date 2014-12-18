@@ -3,25 +3,30 @@
 {% block title %}cBay Send Message{% endblock %}
 
 {% block content %}
-<form  method="post" action="{% url 'sendMessage' %}">
+<form  method="post" enctype="multipart/form-data" action="{% url 'sendMessage' %}">
 	{% csrf_token %}
 	{% if recipient %}
-	<h3 >Send Message To: {{recipient.username}}</h3>
+	<h3 class='lead'>Send Message To: {{recipient.username}}</h3>
 	<input type="hidden" name="recipient_id" value="{{recipient.id}}">
 	{% else %}
 	<h3 >Send Message To: <input type="text" placeholder="Username" name="recipient_name"></h3>
 
 	{% endif %}
-	
-	<div class="fieldWrapper">
-		{{ form.subject.errors }}
-		<label for="subject">Subject:</label>
-		{{form.subject }}
-	</div>
-	<div class="fieldWrapper">
-		{{ form.content.errors }}
-		<label for="content">Content:</label>
-		{{ form.content }}
+	<div class="col-md-12 column well well-lg">
+		<div class="fieldWrapper">
+			{{ form.subject.errors }}
+			<label for="subject">Subject:</label>
+			{{form.subject }}
+		</div>
+		<div class="fieldWrapper">
+			{{ form.content.errors }}
+			<label for="content">Content:</label>
+			{{ form.content }}
+		</div>
+		<div class="fieldWrapper">
+			{{ form.message_pic.errors }}
+			{{ form.message_pic }}
+		</div>
 	</div>
 	<br>
 	<button type="submit" class="btn btn-primary">Send</button>

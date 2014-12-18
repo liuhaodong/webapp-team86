@@ -10,96 +10,97 @@
 		</h3>
 	</div>
 </div>
-<div class="row clearfix">
-	<div class="col-md-6 column">
-		<img src="{% url 'auction_picture' auction.id %}" style="height:300px" class="img-thumbnail">
-	</div>
-	<div class="col-md-6 column well well-lg" id="viewAuctionContent">
-		{% if auction.is_ended %}
-		<div class='alert alert-danger' role='alert' id="auction_ended_alert" ><p>This Auction has ended</p></div>
-		<h2 class='bg-success'>Winner: {{auction.winner}}</h2>
-		{% endif %}
-		<h3>
-			Item Name: {{auction.name}}<br>
-		</h3> 
-		<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
-		<p>Start Time: {{auction.start_time}}</p>
-		<p>End Time: {{auction.end_time}}</p>
-		<p>Current Bid: ${{max_bid_price}}</p> 	
-		<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-html="true" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.bid_price}} <br>{% endfor %}">Bid History</p></a><br><br><br><br>
+<div class="col-md-12 column well well-lg">
+	<div class="row clearfix">
+		<div class="col-md-6 column">
+			<img src="{% url 'auction_picture' auction.id %}" style="height:300px" class="img-thumbnail">
+		</div>
+		<div class="col-md-6 column well well-lg" id="viewAuctionContent">
+			{% if auction.is_ended %}
+			<div class='alert alert-danger' role='alert' id="auction_ended_alert" ><p>This Auction has ended</p></div>
+			<h2 class='bg-success'>Winner: {{auction.winner}}</h2>
+			{% endif %}
+			<h3>
+				Item Name: {{auction.name}}<br>
+			</h3> 
+			<a href='#'><p>Item Seller: {{auction.seller}}</p></a>
+			<p>Start Time: {{auction.start_time}}</p>
+			<p>End Time: {{auction.end_time}}</p>
+			<p>Current Bid: ${{max_bid_price}}</p> 	
+			<a><p class='pull-left' id='bid-history' data-toggle="popover" title="Bidding History" data-html="true" data-content="{% for bid in bids %} {{bid.bidder}}:{{bid.bid_price}} <br>{% endfor %}">Bid History</p></a><br><br><br><br>
 
-		{% if not auction.is_ended%}
-		<form method="post" action="{% url 'placeBid' %}" id="placeBidForm">
-			{% csrf_token %} 
-			<input type="hidden" name="auction_id" id="hidden_auction_id" value={{auction.id}} >
-			Your Bid: <input type="number" name="bid_price" min="1">
-			<button type="submit" class="btn btn-primary">Bid</button>
-		</form>		
-		{% endif %}
-		
-		{% if auction.winner == user %}
-		{% if not auction.is_paid %}
-		<form method="post" action="{% url 'buyAuction' %}" id="buyAuctionButton">
-			{% csrf_token %} 
-			<input type="hidden" name="auction_id" id="hidden_auction_id" value={{auction.id}} >
-			<button type="submit" class="btn btn-primary">Buy</button>
-		</form>
-		{% else %}
-		<h2 class='bg-success'>You have paid this auction</h2>
-		{% endif%}
-		{% endif %}
-		<script type="text/javascript">
-			$(document).ready(function(){
-				$("#bid-history").popover({
-					placement : 'right',
-					trigger: 'hover'
+			{% if not auction.is_ended%}
+			<form method="post" action="{% url 'placeBid' %}" id="placeBidForm">
+				{% csrf_token %} 
+				<input type="hidden" name="auction_id" id="hidden_auction_id" value={{auction.id}} >
+				Your Bid: <input type="number" name="bid_price" min="1">
+				<button type="submit" class="btn btn-primary">Bid</button>
+			</form>		
+			{% endif %}
+
+			{% if auction.winner == user %}
+			{% if not auction.is_paid %}
+			<form method="post" action="{% url 'buyAuction' %}" id="buyAuctionButton">
+				{% csrf_token %} 
+				<input type="hidden" name="auction_id" id="hidden_auction_id" value={{auction.id}} >
+				<button type="submit" class="btn btn-primary">Buy</button>
+			</form>
+			{% else %}
+			<h2 class='bg-success'>You have paid this auction</h2>
+			{% endif%}
+			{% endif %}
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$("#bid-history").popover({
+						placement : 'right',
+						trigger: 'hover'
+					});
+					$("#btn").popover({
+						placement : 'right',
+						trigger: 'hover'
+					});
 				});
-				$("#btn").popover({
-					placement : 'right',
-					trigger: 'hover'
-				});
-			});
-		</script>
-	</div>
-</div><br><br>
-<div class="row clearfix">
-	<div class="col-md-12 column">
-		<div class="tabbable">
-			<ul class="nav nav-tabs">
-				<li class="active">
-					<a href="#panel-item-description" data-toggle="tab">Item Description</a>
-				</li>
-				<li>
-					<a href="#panel-shipping-info" data-toggle="tab">Shipping Info</a>
-				</li>
-			</ul>
-			<div class="tab-content well well-lg">
-				<div class="tab-pane active" id="panel-item-description">
-					<pre>{{auction.description}}
-					</pre>
-				</div>
-				<div class="tab-pane" id="panel-shipping-info">
-					<pre>{{auction.shipping_info}}</pre>
+			</script>
+		</div>
+	</div><br><br>
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#panel-item-description" data-toggle="tab">Item Description</a>
+					</li>
+					<li>
+						<a href="#panel-shipping-info" data-toggle="tab">Shipping Info</a>
+					</li>
+				</ul>
+				<div class="tab-content well well-lg">
+					<div class="tab-pane active" id="panel-item-description">
+						<pre>{{auction.description}}
+						</pre>
+					</div>
+					<div class="tab-pane" id="panel-shipping-info">
+						<pre>{{auction.shipping_info}}</pre>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<h1>__________________________________________________________</h1>
 
-<div class="row clearfix well well-lg">
-	<div class="col-md-12 column">
-		<h2>
-			Comments
-		</h2>
-		{% for comment in comments%}
-		<div class="col-md-12 column well well-lg">
-		<h1>{{comment.title}}</h1>
-		<p>User: {{comment.buyer}} | Rating: {{comment.rating}}</p>
-		<pre>{{comment.content}}</pre>
+	<div class="row clearfix well well-lg">
+		<div class="col-md-12 column">
+			<h2>
+				Comments
+			</h2>
+			{% for comment in comments%}
+			<div class="col-md-12 column well well-lg">
+				<h1>{{comment.title}}</h1>
+				<p>User: {{comment.buyer}} | Rating: {{comment.rating}}</p>
+				<pre>{{comment.content}}</pre>
+			</div>
+			{% endfor %}
 		</div>
-		{% endfor %}
 	</div>
 </div>
 {% endblock %}

@@ -108,27 +108,16 @@
 		</div>
 		<div class="DocumentListHorizontal">
 			<ul class="list-inline">
+				{% for sale in following_sales %}
 				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
+					{% if sale.item_pic %}
+					<span><a href="{% url 'viewSale' sale.id %}"><img src="{% url 'item_picture' sale.id %}" style="height:280px" class="img-thumbnail"></a></span>
+					{% else %}
+					<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
+					{% endif %}
+					<p>{{sale.name}}</p>
 				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
-				<li class="DocumentItem">
-					<span><img alt="140x140" src="static/images/default_header.png" class="img-thumbnail"></span>
-				</li>
+				{% endfor %}
 			</ul>
 		</div>					
 	</div>

@@ -1,0 +1,25 @@
+{% extends 'cbayweb/base.html' %}
+{% block titile %} cBay View Profile {% endblock %}
+{% block content%}
+<div class="col-md-12 column well well-lg">
+	<div class = "col-md-5 column ">
+	<span><a href="#"><img src="{% url 'id_picture' profile.id %}" style="height:280px" class="img-thumbnail"></a></span>
+	</div>
+	<div class = "col-md-7 column ">
+		<p class='lead'>User Name: {{profile.user.username}}</p>
+		<p class='lead'>User Email: {{profile.user.email}}</p>
+		<p class='lead'>Address: {{profile.address}}</p>
+		<p class='lead'>Phone: {{profile.phone}}</p>
+		<p class='lead'>Self Description: {{profile.self_description}}</p>
+		<p class='lead'>Account Balance: ${{profile.account_balance}}</p>
+		<a href="/sendMessage?recipient_id={{profile.user.id}}"><button type="button" class="btn btn-primary"> Contact User </button></a>
+		{% if is_following%}
+		<a href="/unfollowUser?user_id={{profile.user.id}}"><button type="button" class="btn btn-primary"> Unfollow </button></a>
+		{% else %}
+		<a href="/followUser?user_id={{profile.user.id}}"><button type="button" class="btn btn-primary"> Follow </button></a>
+		{% endif %}
+		
+	</div>
+
+</div>
+{% endblock %}

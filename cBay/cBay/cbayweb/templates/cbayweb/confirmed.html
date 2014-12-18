@@ -1,0 +1,10 @@
+{% extends "cbayweb/base.html" %}
+
+{% block title %}cBay Email Confirmed {% endblock %}
+
+{% block content %}
+<pre class='lead'>
+Thank you for confirming your email address.
+Please <a href="{% url 'login' %}">Login</a> to use cBay.
+</pre>
+{% endblock %}
