@@ -61,7 +61,7 @@
 									{% else %}
 									<span><a href="{% url 'viewSale' sale.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
 									{% endif %}
-									<p>Seller: {{sale.seller.username}}</p>
+									<p>Seller: <a href="{% url 'viewProfile' sale.seller.id %}">{{sale.seller.username}}</a></p>
 								</div>
 								<div class="col-md-6 column">
 									<h1>Name: {{sale.name}}</h1>
@@ -81,7 +81,7 @@
 									{% else %}
 									<span><a href="{% url 'viewAuction' auction.id %}"><img  src="static/images/default_header.png" class="img-thumbnail" style="height:280px"></a></span>
 									{% endif %}
-									<p>Seller: {{auction.seller.username}}</p>
+									<p>Seller: <a href="{% url 'viewProfile' auction.seller.id %}">{{auction.seller.username}}</a></p>
 								</div>
 								<div class="col-md-6 column">
 									<h1>Name: {{auction.name}}</h1>

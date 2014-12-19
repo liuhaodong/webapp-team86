@@ -4,8 +4,10 @@
 
 {% block content %}
 <form enctype="multipart/form-data" method="post" action="{% url 'editProfile' %}">
-	{% csrf_token %}
-	{{form}}
-	<button type="submit" class="btn btn-primary">Save</button>
+	<div class="col-md-12 column well well-lg">
+		{% csrf_token %}
+		{{form}}
+		<button type="submit" class="btn btn-primary">Save</button>
+	</div>
 </form>
 {% endblock %}

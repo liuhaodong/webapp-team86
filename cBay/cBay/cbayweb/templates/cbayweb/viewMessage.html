@@ -4,7 +4,10 @@
 <div class="well well-lg row clearfix col-md-12 column">
 	<h2 class="media-heading">Subject: {{message.subject}}</h2>
 	<p class='lead'>From: <a href="{% url 'viewProfile' message.sender.id %}">{{message.sender.username}}</a>	&nbsp &nbsp	To: <a href="{% url 'viewProfile' message.recipient.id %}">{{message.recipient.username}}</a></p>
+	<p>Time: {{message.time_stamp}}</p>
 	<pre class="media-body">{{message.content}}</pre>
+	{% if message.message_pic %}
 	<img src="{% url 'messagePicture' message.id %}"  class="img-thumbnail">
+	{% endif %}
 </div>
 {% endblock %}

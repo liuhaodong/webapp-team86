@@ -3,7 +3,9 @@
 {% block content%}
 <div class="col-md-12 column well well-lg">
 	<div class = "col-md-5 column ">
+	{% if profile.id_picture %}
 	<span><a href="#"><img src="{% url 'id_picture' profile.id %}" style="height:280px" class="img-thumbnail"></a></span>
+	{% endif %}
 	</div>
 	<div class = "col-md-7 column ">
 		<p class='lead'>User Name: {{profile.user.username}}</p>

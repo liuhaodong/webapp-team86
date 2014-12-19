@@ -49,7 +49,7 @@
 									Price : ${{transaction.sale.price}} <br>
 									Quantity: {{transaction.quantity}}<br>
 									Purchage Time: {{transaction.time}} <br>
-									Seller: {{transaction.sale.seller}}  <br>
+									Seller: <a href="{% url 'viewProfile' transaction.sale.seller.id %}">{{transaction.sale.seller}} </a> <br>
 									{% if not transaction.is_finished %}
 									<form action="{% url 'confirmDelivery' %}" method="post" accept-charset="utf-8">
 										{% csrf_token %}
@@ -79,7 +79,7 @@
 									<h5>Item Name: {{transaction.auction.name}}</h5>
 									Price : ${{transaction.auction.current_max_bid}} <br>
 									Purchase Time: {{transaction.time}} <br>
-									Seller: {{transaction.auction.seller}}  <br>
+									Seller: <a href="{% url 'viewProfile' transaction.sale.seller.id %}">{{transaction.auction.seller}} </a> <br>
 									{% if not transaction.is_finished %}
 									
 									<form action="{% url 'confirmDelivery' %}" method="post" accept-charset="utf-8">
@@ -187,21 +187,21 @@
 				<div class = "tab-content col-md-9 column">
 					<div class="tab-pane active" id = "panel-inbox">
 						<div class = "col-md-12 column well well-lg">
-						{% for message in received_messages %}
-						<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.subject}}</pre></a> </li>
-						{% endfor %}
+							{% for message in received_messages %}
+							<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.subject}}</pre></a> </li>
+							{% endfor %}
 						</div>
 					</div>
 					<div class="tab-pane" id = "panel-sent">
 						<div class = "col-md-12 column well well-lg">
-						{% for message in sent_messages %}
-						<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.subject}}</pre></a> </li>
-						{% endfor %}
+							{% for message in sent_messages %}
+							<li> <a href="viewMessage?message_id={{message.id}}"><pre>{{message.subject}}</pre></a> </li>
+							{% endfor %}
 						</div>
 					</div>
 					<div class="tab-pane" id = "panel-trash">
 						<div class = "col-md-12 column well well-lg">
-						
+							
 						</div>
 					</div>
 				</div>
@@ -209,8 +209,9 @@
 		</div>
 		<div class="tab-pane" id="panel-account">
 			<div class = "col-md-5 column ">
+				{% if profile.id_picture %}
 				<span><a href="#"><img src="{% url 'id_picture' profile.id %}" style="height:280px" class="img-thumbnail"></a></span>
-
+				{% endif %}
 			</div>
 			<div class = "col-md-7 column ">
 				<p class='lead'>User Name: {{user.username}}</p>

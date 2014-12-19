@@ -28,13 +28,13 @@ from django.core.mail import send_mail
 # Create your views here.
 @login_required
 def homepage(request):
-    sales = Sale.objects.all()
+    sales = Sale.objects.all().order_by('-start_time')
     categories = []
     for item in CATEGORY_CHOICES:
         categories.append(item[0])
-    auctions = Auction.objects.filter(is_ended = False)
+    auctions = Auction.objects.filter(is_ended = False).order_by('-start_time')
     profile = get_object_or_404(Profile, user = request.user)
-    following_sales = Sale.objects.filter(seller__in = profile.followings.all())
+    following_sales = Sale.objects.filter(seller__in = profile.followings.all()).order_by('-start_time')
     return render(request, 'cbayweb/homepage.html',{'sales': sales,'categories':categories,'auctions': auctions,'following_sales': following_sales})
 
 def getRecommendations(user):
